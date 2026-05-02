@@ -49,16 +49,16 @@ export default async function WorksGridSection({
     take: PAGE_SIZE,
     include: {
       author: true,
-      files: {
-        orderBy: {
-          sortOrder: "asc",
-        },
-        take: 36,
-      },
       _count: {
         select: {
           files: true,
         },
+      },
+      files: {
+        orderBy: {
+          sortOrder: "asc",
+        },
+        take: 1,
       },
     },
   });
@@ -221,7 +221,6 @@ export default async function WorksGridSection({
                 ageRating={work.ageRating}
                 blurCover={work.ageRating === "AGE_16_PLUS" && !show16}
                 accessMode={accessMode}
-                previewFrames={work.type === "GIF" ? work.files.map((file) => file.fileUrl) : []}
               />
             );
           })}

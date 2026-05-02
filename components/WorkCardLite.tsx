@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import VideoFrameCover from "@/components/VideoFrameCover";
@@ -41,7 +41,6 @@ export default function WorkCardLite({
   ageRating = "ALL_AGES",
   blurCover = false,
   accessMode = "allow",
-  previewFrames = [],
 }: {
   href: string;
   title: string;
@@ -59,7 +58,6 @@ export default function WorkCardLite({
   ageRating?: "ALL_AGES" | "AGE_16_PLUS";
   blurCover?: boolean;
   accessMode?: AccessMode;
-  previewFrames?: string[];
 }) {
   const router = useRouter();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -162,12 +160,32 @@ export default function WorkCardLite({
                 </motion.div>
               </motion.div>
             ) : cover ? (
-              <AnimatedImageCover
-                src={cover}
-                alt={title}
-                frames={type === "GIF" ? previewFrames : []}
-                blurCover={blurCover}
-              />
+              <motion.div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+              >
+                <motion.img
+                  src={cover}
+                  alt={title}
+                  loading="lazy"
+                  decoding="async"
+                  whileHover={{ scale: 1.06 }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                    filter: blurCover ? "blur(22px)" : "none",
+                    transform: blurCover ? "scale(1.14)" : "none",
+                    transition: "filter 0.28s ease, transform 0.28s ease",
+                  }}
+                />
+              </motion.div>
             ) : (
               <div
                 style={{
@@ -246,7 +264,11 @@ export default function WorkCardLite({
               👁 {formatViewCount(viewCount)}
             </GlassBadge>
 
-            <GlassBadge position="right" bottom={12} tone={ageRating === "AGE_16_PLUS" ? "danger" : "normal"}>
+            <GlassBadge
+              position="right"
+              bottom={12}
+              tone={ageRating === "AGE_16_PLUS" ? "danger" : "normal"}
+            >
               {ageRating === "AGE_16_PLUS" ? "18+" : "全年龄"}
             </GlassBadge>
           </div>
@@ -540,7 +562,7 @@ function ModalBackdrop({
     };
   }, []);
 
-  const backdrop = (
+  const modal = (
     <motion.div
       onClick={onClose}
       initial={{ opacity: 0 }}
@@ -555,105 +577,22 @@ function ModalBackdrop({
         background: "rgba(10,14,25,0.42)",
         backdropFilter: "blur(14px)",
         WebkitBackdropFilter: "blur(14px)",
-        display: "grid",
-        placeItems: "center",
-        zIndex: 2147483000,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 2147483647,
         padding: 20,
+        boxSizing: "border-box",
       }}
     >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width: "min(440px, calc(100vw - 40px))",
-          maxHeight: "calc(100dvh - 40px)",
-          overflow: "auto",
-          overscrollBehavior: "contain",
-        }}
-      >
-        {children}
-      </div>
+      <div onClick={(e) => e.stopPropagation()}>{children}</div>
     </motion.div>
   );
 
   if (!mounted) return null;
-
-  return createPortal(backdrop, document.body);
+  return createPortal(modal, document.body);
 }
 
-function AnimatedImageCover({
-  src,
-  alt,
-  frames,
-  blurCover,
-}: {
-  src: string;
-  alt: string;
-  frames: string[];
-  blurCover: boolean;
-}) {
-  const imgRef = useRef<HTMLImageElement | null>(null);
-  const safeFrames = useMemo(
-    () => frames.filter((frame) => typeof frame === "string" && frame.trim().length > 0),
-    [frames]
-  );
-  const initialSrc = safeFrames.length > 0 ? safeFrames[0] : src;
-
-  useEffect(() => {
-    if (safeFrames.length <= 1) {
-      if (imgRef.current) imgRef.current.src = initialSrc;
-      return;
-    }
-
-    let index = 0;
-    const previewFrames = safeFrames.slice(0, 36);
-
-    for (const frame of previewFrames.slice(0, 12)) {
-      const image = new Image();
-      image.src = frame;
-    }
-
-    if (imgRef.current) imgRef.current.src = previewFrames[0];
-
-    const interval = previewFrames.length <= 12 ? 140 : previewFrames.length <= 24 ? 110 : 90;
-    const timer = window.setInterval(() => {
-      index = (index + 1) % previewFrames.length;
-      if (imgRef.current) {
-        imgRef.current.src = previewFrames[index];
-      }
-    }, interval);
-
-    return () => window.clearInterval(timer);
-  }, [initialSrc, safeFrames]);
-
-  return (
-    <motion.div
-      style={{
-        width: "100%",
-        height: "100%",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      <motion.img
-        ref={imgRef}
-        src={initialSrc}
-        alt={alt}
-        loading="lazy"
-        whileHover={{ scale: 1.06 }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          display: "block",
-          filter: blurCover ? "blur(22px)" : "none",
-          transform: blurCover ? "scale(1.14)" : "none",
-          transition: "filter 0.28s ease, transform 0.28s ease",
-        }}
-      />
-    </motion.div>
-  );
-}
 const modalStyle: React.CSSProperties = {
   width: "100%",
   maxWidth: 440,
