@@ -53,6 +53,12 @@ export default async function WorksGridSection({
         orderBy: {
           sortOrder: "asc",
         },
+        take: 36,
+      },
+      _count: {
+        select: {
+          files: true,
+        },
       },
     },
   });
@@ -206,7 +212,7 @@ export default async function WorksGridSection({
                 authorName={work.author.nickname}
                 authorRole={work.author.role}
                 authorXp={work.author.xp}
-                pageCount={work.files.length}
+                pageCount={work._count.files}
                 timeLabel="发布时间"
                 timeValue={new Date(work.createdAt).toLocaleString("zh-CN")}
                 cover={cover}
@@ -215,6 +221,7 @@ export default async function WorksGridSection({
                 ageRating={work.ageRating}
                 blurCover={work.ageRating === "AGE_16_PLUS" && !show16}
                 accessMode={accessMode}
+                previewFrames={work.type === "GIF" ? work.files.map((file) => file.fileUrl) : []}
               />
             );
           })}

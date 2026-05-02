@@ -46,7 +46,7 @@ next-env.d.ts
 /public/uploads/
 /public/imported/gifs/
 /public/imported/videos/
-
+/public
 # Node modules
 /node_modules/
 
@@ -54,3 +54,8 @@ next-env.d.ts
 *.log
 .DS_Store
 .env
+
+/public/
+/.next/
+/node_modules/
+
