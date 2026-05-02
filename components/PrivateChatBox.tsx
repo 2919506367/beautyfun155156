@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useChatSocket } from "@/hooks/useChatSocket";
 import EmoticonPicker from "@/components/EmoticonPicker";
+import { useChatSocket } from "@/hooks/useChatSocket";
 
 type ReplyTarget = {
   id: number;
@@ -35,86 +35,64 @@ export default function PrivateChatBox({
   const [notice, setNotice] = useState("");
   const [selectedEmoticonId, setSelectedEmoticonId] = useState<number | null>(null);
   const [showEmoticonPicker, setShowEmoticonPicker] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const typingTimerRef = useRef<number | null>(null);
-  const typingHeartbeatRef = useRef<number | null>(null);
-  const isFocusedRef = useRef(false);
+const typingHeartbeatRef = useRef<number | null>(null);
+const isFocusedRef = useRef(false);
 
-  function reportTyping(isTyping: boolean) {
-    socket.emit("private:typing", {
-      targetUserId,
-      isTyping,
-    });
+function reportTyping(isTyping: boolean) {
+  socket.emit("private:typing", {
+    targetUserId,
+    isTyping,
+  });
+}
+
+function clearTypingTimers() {
+  if (typingTimerRef.current) {
+    window.clearTimeout(typingTimerRef.current);
+    typingTimerRef.current = null;
   }
 
-  function clearTypingTimers() {
-    if (typingTimerRef.current) {
-      window.clearTimeout(typingTimerRef.current);
-      typingTimerRef.current = null;
+  if (typingHeartbeatRef.current) {
+    window.clearInterval(typingHeartbeatRef.current);
+    typingHeartbeatRef.current = null;
+  }
+}
+
+function startTypingPresence() {
+  isFocusedRef.current = true;
+  reportTyping(true);
+
+  if (typingHeartbeatRef.current) {
+    window.clearInterval(typingHeartbeatRef.current);
+  }
+
+  typingHeartbeatRef.current = window.setInterval(() => {
+    if (isFocusedRef.current) {
+      reportTyping(true);
     }
+  }, 1800);
+}
 
-    if (typingHeartbeatRef.current) {
-      window.clearInterval(typingHeartbeatRef.current);
-      typingHeartbeatRef.current = null;
+function stopTypingPresence() {
+  isFocusedRef.current = false;
+  clearTypingTimers();
+  reportTyping(false);
+}
+
+function triggerTyping() {
+  reportTyping(true);
+
+  if (typingTimerRef.current) {
+    window.clearTimeout(typingTimerRef.current);
+  }
+
+  typingTimerRef.current = window.setTimeout(() => {
+    if (!isFocusedRef.current) {
+      reportTyping(false);
     }
-  }
-
-  function startTypingPresence() {
-    isFocusedRef.current = true;
-    reportTyping(true);
-
-    if (typingHeartbeatRef.current) {
-      window.clearInterval(typingHeartbeatRef.current);
-    }
-
-    typingHeartbeatRef.current = window.setInterval(() => {
-      if (isFocusedRef.current) {
-        reportTyping(true);
-      }
-    }, 1800);
-  }
-
-  function stopTypingPresence() {
-    isFocusedRef.current = false;
-    clearTypingTimers();
-    reportTyping(false);
-  }
-
-  function triggerTyping() {
-    reportTyping(true);
-
-    if (typingTimerRef.current) {
-      window.clearTimeout(typingTimerRef.current);
-    }
-
-    typingTimerRef.current = window.setTimeout(() => {
-      if (!isFocusedRef.current) {
-        reportTyping(false);
-      }
-      typingTimerRef.current = null;
-    }, 2600);
-  }
-
-  function insertEmoji(emoji: string) {
-    const textarea = textareaRef.current;
-    if (!textarea) {
-      setContent((current) => `${current}${emoji}`);
-      return;
-    }
-
-    const start = textarea.selectionStart ?? content.length;
-    const end = textarea.selectionEnd ?? content.length;
-    const next = `${content.slice(0, start)}${emoji}${content.slice(end)}`;
-    setContent(next);
-    triggerTyping();
-
-    window.requestAnimationFrame(() => {
-      textarea.focus();
-      const nextPosition = start + emoji.length;
-      textarea.setSelectionRange(nextPosition, nextPosition);
-    });
-  }
-
+    typingTimerRef.current = null;
+  }, 2600);
+}
   useEffect(() => {
     try {
       const raw = localStorage.getItem(draftKey);
@@ -130,13 +108,12 @@ export default function PrivateChatBox({
     } catch {}
   }, [draftKey, content]);
 
-  useEffect(() => {
-    return () => {
-      clearTypingTimers();
-      reportTyping(false);
-    };
-  }, [targetUserId]);
-
+useEffect(() => {
+  return () => {
+    clearTypingTimers();
+    reportTyping(false);
+  };
+}, [targetUserId]);
   async function handleSend() {
     const text = content.trim();
     if ((!text && selectedEmoticonId === null) || loading) return;
@@ -150,12 +127,11 @@ export default function PrivateChatBox({
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
         body: JSON.stringify({
           targetUserId,
           content: text,
-          replyToId: replyTarget?.id ?? null,
           emoticonId: selectedEmoticonId,
+          replyToId: replyTarget?.id ?? null,
         }),
       });
 
@@ -169,7 +145,7 @@ export default function PrivateChatBox({
       setContent("");
       setSelectedEmoticonId(null);
       setShowEmoticonPicker(false);
-      stopTypingPresence();
+      reportTyping(false);
 
       try {
         localStorage.removeItem(draftKey);
@@ -190,14 +166,14 @@ export default function PrivateChatBox({
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      stopTypingPresence();	
     }
   }
 
   return (
-    <div className="chatbox-shell tg-composer-shell">
+    <div className="chatbox-shell">
       {replyTarget && (
-        <div className="chatbox-reply-card tg-composer-reply">
+        <div className="chatbox-reply-card">
           <div className="chatbox-reply-head">
             <div className="chatbox-reply-title">回复 {replyTarget.senderLabel}</div>
 
@@ -206,7 +182,7 @@ export default function PrivateChatBox({
               onClick={onCancelReply}
               className="chatbox-inline-action-btn"
             >
-              取消
+              取消回复
             </button>
           </div>
 
@@ -216,73 +192,70 @@ export default function PrivateChatBox({
 
       {notice && <div className="chatbox-notice chatbox-notice-error">{notice}</div>}
 
-      <div className="tg-composer-stage">
-        {showEmoticonPicker && (
-          <div className="tg-composer-picker-popover">
-            <EmoticonPicker
-              selectedId={selectedEmoticonId}
-              onSelect={setSelectedEmoticonId}
-              onEmojiSelect={insertEmoji}
-              onClose={() => setShowEmoticonPicker(false)}
-            />
-          </div>
-        )}
-
-        {selectedEmoticonId && (
-          <div className="tg-sticker-selected-strip">
-            <span>已选择 1 个贴纸，会随本条消息发送</span>
-            <button type="button" onClick={() => setSelectedEmoticonId(null)}>
-              移除
-            </button>
-          </div>
-        )}
-
-        <div className="tg-composer-bar">
-          <button type="button" className="tg-composer-circle-btn" aria-label="附件">
-            📎
+      <div className="chatbox-toolbar-row">
+        <div className="chatbox-mode-pill">私聊发送</div>
+        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+          <button
+            type="button"
+            onClick={() => setShowEmoticonPicker((prev) => !prev)}
+            className="chatbox-inline-action-btn"
+          >
+            {showEmoticonPicker ? "收起表情" : "表情包"}
           </button>
+          {selectedEmoticonId !== null && (
+            <span className="chatbox-tip-text">已选表情 #{selectedEmoticonId}</span>
+          )}
+          <div className="chatbox-tip-text">Enter 发送，Shift + Enter 换行</div>
+        </div>
+      </div>
 
-          <textarea
-            ref={textareaRef}
-            value={content}
-            onChange={(e) => {
-              setContent(e.target.value);
+      {showEmoticonPicker && (
+        <div style={{ marginBottom: 12 }}>
+          <EmoticonPicker
+            selectedId={selectedEmoticonId}
+            onSelect={(id) => {
+              setSelectedEmoticonId(id);
               triggerTyping();
             }}
-            onFocus={() => {
-              startTypingPresence();
-            }}
-            onBlur={() => {
-              stopTypingPresence();
-            }}
-            onKeyDown={handleKeyDown}
-            placeholder={loadingMessages ? "正在同步最新聊天记录…" : "输入消息..."}
-            rows={1}
-            className="chatbox-textarea tg-composer-textarea"
           />
-
-          <button
-            type="button"
-            onClick={() => setShowEmoticonPicker((value) => !value)}
-            className={`tg-composer-circle-btn ${showEmoticonPicker ? "tg-composer-circle-btn-active" : ""}`}
-            aria-label="表情和贴纸"
-          >
-            ☺
-          </button>
-
-          <button type="button" className="tg-composer-circle-btn tg-composer-mic" aria-label="语音占位">
-            🎙
-          </button>
-
-          <button
-            type="button"
-            onClick={handleSend}
-            disabled={loading || (!content.trim() && selectedEmoticonId === null)}
-            className="chatbox-send-btn tg-composer-send-btn"
-          >
-            {loading ? "…" : "➤"}
-          </button>
         </div>
+      )}
+
+      <div className="chatbox-grid">
+        <textarea
+          value={content}
+          onChange={(e) => {
+            setContent(e.target.value);
+            triggerTyping();
+          }}
+onFocus={() => {
+  startTypingPresence();
+}}
+onBlur={() => {
+  stopTypingPresence();
+}}
+          onKeyDown={handleKeyDown}
+          placeholder="输入消息，Enter 发送，Shift + Enter 换行"
+          rows={3}
+          className="chatbox-textarea"
+        />
+
+        <button
+          type="button"
+          onClick={handleSend}
+          disabled={loading}
+          className="chatbox-send-btn"
+        >
+          {loading ? "发送中..." : "发送"}
+        </button>
+      </div>
+
+      <div className="chatbox-footnote">
+        {loadingMessages
+          ? "正在同步最新聊天记录…"
+          : selectedEmoticonId !== null
+          ? "这次会把文字和已选表情包一起发出去。"
+          : "草稿会自动记住，返回后不会丢字。"}
       </div>
     </div>
   );

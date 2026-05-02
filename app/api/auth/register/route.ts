@@ -1,9 +1,28 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { AUTH_COOKIE_NAME, signAuthToken } from "@/lib/auth";
+import {
+  markAuthAttempt,
+  markCaptchaTrusted,
+  shouldRequireCaptcha,
+  validateCaptchaForRequest,
+} from "@/lib/authCaptcha";
 
-export async function POST(req: Request) {
+function authError(req: NextRequest, message: string, status = 400) {
+  const res = NextResponse.json(
+    {
+      error: message,
+      needCaptcha: shouldRequireCaptcha(req),
+    },
+    { status }
+  );
+
+  markAuthAttempt(req, res);
+  return res;
+}
+
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
@@ -11,19 +30,20 @@ export async function POST(req: Request) {
     const password = String(body.password || "").trim();
     const nickname = String(body.nickname || "").trim();
     const inviteCode = String(body.inviteCode || "").trim().toUpperCase();
+    const captchaCode = String(body.captchaCode || "").trim();
+
+    const captchaResult = validateCaptchaForRequest(req, captchaCode);
+
+    if (!captchaResult.ok) {
+      return authError(req, captchaResult.error || "验证码错误", 400);
+    }
 
     if (!account || !password || !nickname || !inviteCode) {
-      return NextResponse.json(
-        { error: "账号、密码、昵称、邀请码都不能为空" },
-        { status: 400 }
-      );
+      return authError(req, "账号、密码、昵称、邀请码都不能为空", 400);
     }
 
     if (password.length < 6) {
-      return NextResponse.json(
-        { error: "密码至少 6 位" },
-        { status: 400 }
-      );
+      return authError(req, "密码至少 6 位", 400);
     }
 
     const exists = await prisma.user.findUnique({
@@ -31,10 +51,7 @@ export async function POST(req: Request) {
     });
 
     if (exists) {
-      return NextResponse.json(
-        { error: "这个账号已经被注册了" },
-        { status: 400 }
-      );
+      return authError(req, "这个账号已经被注册了", 400);
     }
 
     const invite = await prisma.registerInviteCode.findUnique({
@@ -42,17 +59,11 @@ export async function POST(req: Request) {
     });
 
     if (!invite) {
-      return NextResponse.json(
-        { error: "邀请码不存在" },
-        { status: 400 }
-      );
+      return authError(req, "邀请码不存在", 400);
     }
 
     if (invite.isUsed) {
-      return NextResponse.json(
-        { error: "邀请码已被使用" },
-        { status: 400 }
-      );
+      return authError(req, "邀请码已被使用", 400);
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
@@ -97,6 +108,8 @@ export async function POST(req: Request) {
       path: "/",
       maxAge: 60 * 60 * 24 * 7,
     });
+
+    markCaptchaTrusted(res);
 
     return res;
   } catch (error) {

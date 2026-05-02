@@ -1,20 +1,43 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { AUTH_COOKIE_NAME, signAuthToken } from "@/lib/auth";
+import {
+  markAuthAttempt,
+  markCaptchaTrusted,
+  shouldRequireCaptcha,
+  validateCaptchaForRequest,
+} from "@/lib/authCaptcha";
 
-export async function POST(req: Request) {
+function authError(req: NextRequest, message: string, status = 400) {
+  const res = NextResponse.json(
+    {
+      error: message,
+      needCaptcha: shouldRequireCaptcha(req),
+    },
+    { status }
+  );
+
+  markAuthAttempt(req, res);
+  return res;
+}
+
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
     const account = String(body.account || "").trim();
     const password = String(body.password || "").trim();
+    const captchaCode = String(body.captchaCode || "").trim();
+
+    const captchaResult = validateCaptchaForRequest(req, captchaCode);
+
+    if (!captchaResult.ok) {
+      return authError(req, captchaResult.error || "验证码错误", 400);
+    }
 
     if (!account || !password) {
-      return NextResponse.json(
-        { error: "账号和密码不能为空" },
-        { status: 400 }
-      );
+      return authError(req, "账号和密码不能为空", 400);
     }
 
     const user = await prisma.user.findUnique({
@@ -22,26 +45,17 @@ export async function POST(req: Request) {
     });
 
     if (!user) {
-      return NextResponse.json(
-        { error: "账号或密码错误" },
-        { status: 400 }
-      );
+      return authError(req, "账号或密码错误", 400);
     }
 
     if (user.isBanned) {
-      return NextResponse.json(
-        { error: "该账号已被封禁，无法登录" },
-        { status: 403 }
-      );
+      return authError(req, "该账号已被封禁，无法登录", 403);
     }
 
     const matched = await bcrypt.compare(password, user.passwordHash);
 
     if (!matched) {
-      return NextResponse.json(
-        { error: "账号或密码错误" },
-        { status: 400 }
-      );
+      return authError(req, "账号或密码错误", 400);
     }
 
     const token = signAuthToken({
@@ -72,6 +86,8 @@ export async function POST(req: Request) {
       path: "/",
       maxAge: 60 * 60 * 24 * 7,
     });
+
+    markCaptchaTrusted(res);
 
     return res;
   } catch (error) {
