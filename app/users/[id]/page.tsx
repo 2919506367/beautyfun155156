@@ -63,22 +63,24 @@ const currentUser = await getCurrentUser();
   const folderPage = Math.max(1, Number(query.folderPage || "1") || 1);
   const gifPage = Math.max(1, Number(query.gifPage || "1") || 1);
   const videoPage = Math.max(1, Number(query.videoPage || "1") || 1);
+  const isAdmin = currentUser?.role === "ADMIN";
+  const visibilityWhere = !isAdmin ? { isPublic: true } : {};
 
   const [folderCount, gifCount, videoCount] = await Promise.all([
     prisma.work.count({
-      where: { authorId: user.id, type: "FOLDER" },
+      where: { authorId: user.id, type: "FOLDER", ...visibilityWhere },
     }),
     prisma.work.count({
-      where: { authorId: user.id, type: "GIF" },
+      where: { authorId: user.id, type: "GIF", ...visibilityWhere },
     }),
     prisma.work.count({
-      where: { authorId: user.id, type: "VIDEO" },
+      where: { authorId: user.id, type: "VIDEO", ...visibilityWhere },
     }),
   ]);
 
   const [folderWorks, gifWorks, videoWorks] = await Promise.all([
     prisma.work.findMany({
-      where: { authorId: user.id, type: "FOLDER" },
+      where: { authorId: user.id, type: "FOLDER", ...visibilityWhere },
       orderBy: { createdAt: "desc" },
       skip: (folderPage - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
@@ -90,7 +92,7 @@ const currentUser = await getCurrentUser();
       },
     }),
     prisma.work.findMany({
-      where: { authorId: user.id, type: "GIF" },
+      where: { authorId: user.id, type: "GIF", ...visibilityWhere },
       orderBy: { createdAt: "desc" },
       skip: (gifPage - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
@@ -102,7 +104,7 @@ const currentUser = await getCurrentUser();
       },
     }),
     prisma.work.findMany({
-      where: { authorId: user.id, type: "VIDEO" },
+      where: { authorId: user.id, type: "VIDEO", ...visibilityWhere },
       orderBy: { createdAt: "desc" },
       skip: (videoPage - 1) * PAGE_SIZE,
       take: PAGE_SIZE,

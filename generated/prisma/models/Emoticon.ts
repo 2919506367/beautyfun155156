@@ -236,6 +236,7 @@ export type EmoticonWhereInput = {
   copiedFrom?: Prisma.XOR<Prisma.EmoticonNullableScalarRelationFilter, Prisma.EmoticonWhereInput> | null
   copiedItems?: Prisma.EmoticonListRelationFilter
   comments?: Prisma.CommentListRelationFilter
+  forumComments?: Prisma.ForumCommentListRelationFilter
   privateMessages?: Prisma.PrivateMessageListRelationFilter
   groupMessages?: Prisma.GroupMessageListRelationFilter
 }
@@ -251,6 +252,7 @@ export type EmoticonOrderByWithRelationInput = {
   copiedFrom?: Prisma.EmoticonOrderByWithRelationInput
   copiedItems?: Prisma.EmoticonOrderByRelationAggregateInput
   comments?: Prisma.CommentOrderByRelationAggregateInput
+  forumComments?: Prisma.ForumCommentOrderByRelationAggregateInput
   privateMessages?: Prisma.PrivateMessageOrderByRelationAggregateInput
   groupMessages?: Prisma.GroupMessageOrderByRelationAggregateInput
 }
@@ -270,6 +272,7 @@ export type EmoticonWhereUniqueInput = Prisma.AtLeast<{
   copiedFrom?: Prisma.XOR<Prisma.EmoticonNullableScalarRelationFilter, Prisma.EmoticonWhereInput> | null
   copiedItems?: Prisma.EmoticonListRelationFilter
   comments?: Prisma.CommentListRelationFilter
+  forumComments?: Prisma.ForumCommentListRelationFilter
   privateMessages?: Prisma.PrivateMessageListRelationFilter
   groupMessages?: Prisma.GroupMessageListRelationFilter
 }, "id" | "ownerId_copiedFromId">
@@ -308,6 +311,7 @@ export type EmoticonCreateInput = {
   copiedFrom?: Prisma.EmoticonCreateNestedOneWithoutCopiedItemsInput
   copiedItems?: Prisma.EmoticonCreateNestedManyWithoutCopiedFromInput
   comments?: Prisma.CommentCreateNestedManyWithoutEmoticonInput
+  forumComments?: Prisma.ForumCommentCreateNestedManyWithoutEmoticonInput
   privateMessages?: Prisma.PrivateMessageCreateNestedManyWithoutEmoticonInput
   groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutEmoticonInput
 }
@@ -321,6 +325,7 @@ export type EmoticonUncheckedCreateInput = {
   createdAt?: Date | string
   copiedItems?: Prisma.EmoticonUncheckedCreateNestedManyWithoutCopiedFromInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutEmoticonInput
+  forumComments?: Prisma.ForumCommentUncheckedCreateNestedManyWithoutEmoticonInput
   privateMessages?: Prisma.PrivateMessageUncheckedCreateNestedManyWithoutEmoticonInput
   groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutEmoticonInput
 }
@@ -333,6 +338,7 @@ export type EmoticonUpdateInput = {
   copiedFrom?: Prisma.EmoticonUpdateOneWithoutCopiedItemsNestedInput
   copiedItems?: Prisma.EmoticonUpdateManyWithoutCopiedFromNestedInput
   comments?: Prisma.CommentUpdateManyWithoutEmoticonNestedInput
+  forumComments?: Prisma.ForumCommentUpdateManyWithoutEmoticonNestedInput
   privateMessages?: Prisma.PrivateMessageUpdateManyWithoutEmoticonNestedInput
   groupMessages?: Prisma.GroupMessageUpdateManyWithoutEmoticonNestedInput
 }
@@ -346,6 +352,7 @@ export type EmoticonUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   copiedItems?: Prisma.EmoticonUncheckedUpdateManyWithoutCopiedFromNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutEmoticonNestedInput
+  forumComments?: Prisma.ForumCommentUncheckedUpdateManyWithoutEmoticonNestedInput
   privateMessages?: Prisma.PrivateMessageUncheckedUpdateManyWithoutEmoticonNestedInput
   groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutEmoticonNestedInput
 }
@@ -581,6 +588,22 @@ export type EmoticonUncheckedUpdateManyWithoutCopiedFromNestedInput = {
   deleteMany?: Prisma.EmoticonScalarWhereInput | Prisma.EmoticonScalarWhereInput[]
 }
 
+export type EmoticonCreateNestedOneWithoutForumCommentsInput = {
+  create?: Prisma.XOR<Prisma.EmoticonCreateWithoutForumCommentsInput, Prisma.EmoticonUncheckedCreateWithoutForumCommentsInput>
+  connectOrCreate?: Prisma.EmoticonCreateOrConnectWithoutForumCommentsInput
+  connect?: Prisma.EmoticonWhereUniqueInput
+}
+
+export type EmoticonUpdateOneWithoutForumCommentsNestedInput = {
+  create?: Prisma.XOR<Prisma.EmoticonCreateWithoutForumCommentsInput, Prisma.EmoticonUncheckedCreateWithoutForumCommentsInput>
+  connectOrCreate?: Prisma.EmoticonCreateOrConnectWithoutForumCommentsInput
+  upsert?: Prisma.EmoticonUpsertWithoutForumCommentsInput
+  disconnect?: Prisma.EmoticonWhereInput | boolean
+  delete?: Prisma.EmoticonWhereInput | boolean
+  connect?: Prisma.EmoticonWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EmoticonUpdateToOneWithWhereWithoutForumCommentsInput, Prisma.EmoticonUpdateWithoutForumCommentsInput>, Prisma.EmoticonUncheckedUpdateWithoutForumCommentsInput>
+}
+
 export type EmoticonCreateWithoutOwnerInput = {
   label?: string | null
   imageUrl: string
@@ -588,6 +611,7 @@ export type EmoticonCreateWithoutOwnerInput = {
   copiedFrom?: Prisma.EmoticonCreateNestedOneWithoutCopiedItemsInput
   copiedItems?: Prisma.EmoticonCreateNestedManyWithoutCopiedFromInput
   comments?: Prisma.CommentCreateNestedManyWithoutEmoticonInput
+  forumComments?: Prisma.ForumCommentCreateNestedManyWithoutEmoticonInput
   privateMessages?: Prisma.PrivateMessageCreateNestedManyWithoutEmoticonInput
   groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutEmoticonInput
 }
@@ -600,6 +624,7 @@ export type EmoticonUncheckedCreateWithoutOwnerInput = {
   createdAt?: Date | string
   copiedItems?: Prisma.EmoticonUncheckedCreateNestedManyWithoutCopiedFromInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutEmoticonInput
+  forumComments?: Prisma.ForumCommentUncheckedCreateNestedManyWithoutEmoticonInput
   privateMessages?: Prisma.PrivateMessageUncheckedCreateNestedManyWithoutEmoticonInput
   groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutEmoticonInput
 }
@@ -648,6 +673,7 @@ export type EmoticonCreateWithoutCommentsInput = {
   owner: Prisma.UserCreateNestedOneWithoutEmoticonsInput
   copiedFrom?: Prisma.EmoticonCreateNestedOneWithoutCopiedItemsInput
   copiedItems?: Prisma.EmoticonCreateNestedManyWithoutCopiedFromInput
+  forumComments?: Prisma.ForumCommentCreateNestedManyWithoutEmoticonInput
   privateMessages?: Prisma.PrivateMessageCreateNestedManyWithoutEmoticonInput
   groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutEmoticonInput
 }
@@ -660,6 +686,7 @@ export type EmoticonUncheckedCreateWithoutCommentsInput = {
   copiedFromId?: number | null
   createdAt?: Date | string
   copiedItems?: Prisma.EmoticonUncheckedCreateNestedManyWithoutCopiedFromInput
+  forumComments?: Prisma.ForumCommentUncheckedCreateNestedManyWithoutEmoticonInput
   privateMessages?: Prisma.PrivateMessageUncheckedCreateNestedManyWithoutEmoticonInput
   groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutEmoticonInput
 }
@@ -687,6 +714,7 @@ export type EmoticonUpdateWithoutCommentsInput = {
   owner?: Prisma.UserUpdateOneRequiredWithoutEmoticonsNestedInput
   copiedFrom?: Prisma.EmoticonUpdateOneWithoutCopiedItemsNestedInput
   copiedItems?: Prisma.EmoticonUpdateManyWithoutCopiedFromNestedInput
+  forumComments?: Prisma.ForumCommentUpdateManyWithoutEmoticonNestedInput
   privateMessages?: Prisma.PrivateMessageUpdateManyWithoutEmoticonNestedInput
   groupMessages?: Prisma.GroupMessageUpdateManyWithoutEmoticonNestedInput
 }
@@ -699,6 +727,7 @@ export type EmoticonUncheckedUpdateWithoutCommentsInput = {
   copiedFromId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   copiedItems?: Prisma.EmoticonUncheckedUpdateManyWithoutCopiedFromNestedInput
+  forumComments?: Prisma.ForumCommentUncheckedUpdateManyWithoutEmoticonNestedInput
   privateMessages?: Prisma.PrivateMessageUncheckedUpdateManyWithoutEmoticonNestedInput
   groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutEmoticonNestedInput
 }
@@ -711,6 +740,7 @@ export type EmoticonCreateWithoutPrivateMessagesInput = {
   copiedFrom?: Prisma.EmoticonCreateNestedOneWithoutCopiedItemsInput
   copiedItems?: Prisma.EmoticonCreateNestedManyWithoutCopiedFromInput
   comments?: Prisma.CommentCreateNestedManyWithoutEmoticonInput
+  forumComments?: Prisma.ForumCommentCreateNestedManyWithoutEmoticonInput
   groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutEmoticonInput
 }
 
@@ -723,6 +753,7 @@ export type EmoticonUncheckedCreateWithoutPrivateMessagesInput = {
   createdAt?: Date | string
   copiedItems?: Prisma.EmoticonUncheckedCreateNestedManyWithoutCopiedFromInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutEmoticonInput
+  forumComments?: Prisma.ForumCommentUncheckedCreateNestedManyWithoutEmoticonInput
   groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutEmoticonInput
 }
 
@@ -750,6 +781,7 @@ export type EmoticonUpdateWithoutPrivateMessagesInput = {
   copiedFrom?: Prisma.EmoticonUpdateOneWithoutCopiedItemsNestedInput
   copiedItems?: Prisma.EmoticonUpdateManyWithoutCopiedFromNestedInput
   comments?: Prisma.CommentUpdateManyWithoutEmoticonNestedInput
+  forumComments?: Prisma.ForumCommentUpdateManyWithoutEmoticonNestedInput
   groupMessages?: Prisma.GroupMessageUpdateManyWithoutEmoticonNestedInput
 }
 
@@ -762,6 +794,7 @@ export type EmoticonUncheckedUpdateWithoutPrivateMessagesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   copiedItems?: Prisma.EmoticonUncheckedUpdateManyWithoutCopiedFromNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutEmoticonNestedInput
+  forumComments?: Prisma.ForumCommentUncheckedUpdateManyWithoutEmoticonNestedInput
   groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutEmoticonNestedInput
 }
 
@@ -773,6 +806,7 @@ export type EmoticonCreateWithoutGroupMessagesInput = {
   copiedFrom?: Prisma.EmoticonCreateNestedOneWithoutCopiedItemsInput
   copiedItems?: Prisma.EmoticonCreateNestedManyWithoutCopiedFromInput
   comments?: Prisma.CommentCreateNestedManyWithoutEmoticonInput
+  forumComments?: Prisma.ForumCommentCreateNestedManyWithoutEmoticonInput
   privateMessages?: Prisma.PrivateMessageCreateNestedManyWithoutEmoticonInput
 }
 
@@ -785,6 +819,7 @@ export type EmoticonUncheckedCreateWithoutGroupMessagesInput = {
   createdAt?: Date | string
   copiedItems?: Prisma.EmoticonUncheckedCreateNestedManyWithoutCopiedFromInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutEmoticonInput
+  forumComments?: Prisma.ForumCommentUncheckedCreateNestedManyWithoutEmoticonInput
   privateMessages?: Prisma.PrivateMessageUncheckedCreateNestedManyWithoutEmoticonInput
 }
 
@@ -812,6 +847,7 @@ export type EmoticonUpdateWithoutGroupMessagesInput = {
   copiedFrom?: Prisma.EmoticonUpdateOneWithoutCopiedItemsNestedInput
   copiedItems?: Prisma.EmoticonUpdateManyWithoutCopiedFromNestedInput
   comments?: Prisma.CommentUpdateManyWithoutEmoticonNestedInput
+  forumComments?: Prisma.ForumCommentUpdateManyWithoutEmoticonNestedInput
   privateMessages?: Prisma.PrivateMessageUpdateManyWithoutEmoticonNestedInput
 }
 
@@ -824,6 +860,7 @@ export type EmoticonUncheckedUpdateWithoutGroupMessagesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   copiedItems?: Prisma.EmoticonUncheckedUpdateManyWithoutCopiedFromNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutEmoticonNestedInput
+  forumComments?: Prisma.ForumCommentUncheckedUpdateManyWithoutEmoticonNestedInput
   privateMessages?: Prisma.PrivateMessageUncheckedUpdateManyWithoutEmoticonNestedInput
 }
 
@@ -834,6 +871,7 @@ export type EmoticonCreateWithoutCopiedItemsInput = {
   owner: Prisma.UserCreateNestedOneWithoutEmoticonsInput
   copiedFrom?: Prisma.EmoticonCreateNestedOneWithoutCopiedItemsInput
   comments?: Prisma.CommentCreateNestedManyWithoutEmoticonInput
+  forumComments?: Prisma.ForumCommentCreateNestedManyWithoutEmoticonInput
   privateMessages?: Prisma.PrivateMessageCreateNestedManyWithoutEmoticonInput
   groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutEmoticonInput
 }
@@ -846,6 +884,7 @@ export type EmoticonUncheckedCreateWithoutCopiedItemsInput = {
   copiedFromId?: number | null
   createdAt?: Date | string
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutEmoticonInput
+  forumComments?: Prisma.ForumCommentUncheckedCreateNestedManyWithoutEmoticonInput
   privateMessages?: Prisma.PrivateMessageUncheckedCreateNestedManyWithoutEmoticonInput
   groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutEmoticonInput
 }
@@ -862,6 +901,7 @@ export type EmoticonCreateWithoutCopiedFromInput = {
   owner: Prisma.UserCreateNestedOneWithoutEmoticonsInput
   copiedItems?: Prisma.EmoticonCreateNestedManyWithoutCopiedFromInput
   comments?: Prisma.CommentCreateNestedManyWithoutEmoticonInput
+  forumComments?: Prisma.ForumCommentCreateNestedManyWithoutEmoticonInput
   privateMessages?: Prisma.PrivateMessageCreateNestedManyWithoutEmoticonInput
   groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutEmoticonInput
 }
@@ -874,6 +914,7 @@ export type EmoticonUncheckedCreateWithoutCopiedFromInput = {
   createdAt?: Date | string
   copiedItems?: Prisma.EmoticonUncheckedCreateNestedManyWithoutCopiedFromInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutEmoticonInput
+  forumComments?: Prisma.ForumCommentUncheckedCreateNestedManyWithoutEmoticonInput
   privateMessages?: Prisma.PrivateMessageUncheckedCreateNestedManyWithoutEmoticonInput
   groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutEmoticonInput
 }
@@ -905,6 +946,7 @@ export type EmoticonUpdateWithoutCopiedItemsInput = {
   owner?: Prisma.UserUpdateOneRequiredWithoutEmoticonsNestedInput
   copiedFrom?: Prisma.EmoticonUpdateOneWithoutCopiedItemsNestedInput
   comments?: Prisma.CommentUpdateManyWithoutEmoticonNestedInput
+  forumComments?: Prisma.ForumCommentUpdateManyWithoutEmoticonNestedInput
   privateMessages?: Prisma.PrivateMessageUpdateManyWithoutEmoticonNestedInput
   groupMessages?: Prisma.GroupMessageUpdateManyWithoutEmoticonNestedInput
 }
@@ -917,6 +959,7 @@ export type EmoticonUncheckedUpdateWithoutCopiedItemsInput = {
   copiedFromId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.CommentUncheckedUpdateManyWithoutEmoticonNestedInput
+  forumComments?: Prisma.ForumCommentUncheckedUpdateManyWithoutEmoticonNestedInput
   privateMessages?: Prisma.PrivateMessageUncheckedUpdateManyWithoutEmoticonNestedInput
   groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutEmoticonNestedInput
 }
@@ -937,6 +980,72 @@ export type EmoticonUpdateManyWithWhereWithoutCopiedFromInput = {
   data: Prisma.XOR<Prisma.EmoticonUpdateManyMutationInput, Prisma.EmoticonUncheckedUpdateManyWithoutCopiedFromInput>
 }
 
+export type EmoticonCreateWithoutForumCommentsInput = {
+  label?: string | null
+  imageUrl: string
+  createdAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutEmoticonsInput
+  copiedFrom?: Prisma.EmoticonCreateNestedOneWithoutCopiedItemsInput
+  copiedItems?: Prisma.EmoticonCreateNestedManyWithoutCopiedFromInput
+  comments?: Prisma.CommentCreateNestedManyWithoutEmoticonInput
+  privateMessages?: Prisma.PrivateMessageCreateNestedManyWithoutEmoticonInput
+  groupMessages?: Prisma.GroupMessageCreateNestedManyWithoutEmoticonInput
+}
+
+export type EmoticonUncheckedCreateWithoutForumCommentsInput = {
+  id?: number
+  ownerId: number
+  label?: string | null
+  imageUrl: string
+  copiedFromId?: number | null
+  createdAt?: Date | string
+  copiedItems?: Prisma.EmoticonUncheckedCreateNestedManyWithoutCopiedFromInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutEmoticonInput
+  privateMessages?: Prisma.PrivateMessageUncheckedCreateNestedManyWithoutEmoticonInput
+  groupMessages?: Prisma.GroupMessageUncheckedCreateNestedManyWithoutEmoticonInput
+}
+
+export type EmoticonCreateOrConnectWithoutForumCommentsInput = {
+  where: Prisma.EmoticonWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmoticonCreateWithoutForumCommentsInput, Prisma.EmoticonUncheckedCreateWithoutForumCommentsInput>
+}
+
+export type EmoticonUpsertWithoutForumCommentsInput = {
+  update: Prisma.XOR<Prisma.EmoticonUpdateWithoutForumCommentsInput, Prisma.EmoticonUncheckedUpdateWithoutForumCommentsInput>
+  create: Prisma.XOR<Prisma.EmoticonCreateWithoutForumCommentsInput, Prisma.EmoticonUncheckedCreateWithoutForumCommentsInput>
+  where?: Prisma.EmoticonWhereInput
+}
+
+export type EmoticonUpdateToOneWithWhereWithoutForumCommentsInput = {
+  where?: Prisma.EmoticonWhereInput
+  data: Prisma.XOR<Prisma.EmoticonUpdateWithoutForumCommentsInput, Prisma.EmoticonUncheckedUpdateWithoutForumCommentsInput>
+}
+
+export type EmoticonUpdateWithoutForumCommentsInput = {
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutEmoticonsNestedInput
+  copiedFrom?: Prisma.EmoticonUpdateOneWithoutCopiedItemsNestedInput
+  copiedItems?: Prisma.EmoticonUpdateManyWithoutCopiedFromNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutEmoticonNestedInput
+  privateMessages?: Prisma.PrivateMessageUpdateManyWithoutEmoticonNestedInput
+  groupMessages?: Prisma.GroupMessageUpdateManyWithoutEmoticonNestedInput
+}
+
+export type EmoticonUncheckedUpdateWithoutForumCommentsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  ownerId?: Prisma.IntFieldUpdateOperationsInput | number
+  label?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  copiedFromId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  copiedItems?: Prisma.EmoticonUncheckedUpdateManyWithoutCopiedFromNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutEmoticonNestedInput
+  privateMessages?: Prisma.PrivateMessageUncheckedUpdateManyWithoutEmoticonNestedInput
+  groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutEmoticonNestedInput
+}
+
 export type EmoticonCreateManyOwnerInput = {
   id?: number
   label?: string | null
@@ -952,6 +1061,7 @@ export type EmoticonUpdateWithoutOwnerInput = {
   copiedFrom?: Prisma.EmoticonUpdateOneWithoutCopiedItemsNestedInput
   copiedItems?: Prisma.EmoticonUpdateManyWithoutCopiedFromNestedInput
   comments?: Prisma.CommentUpdateManyWithoutEmoticonNestedInput
+  forumComments?: Prisma.ForumCommentUpdateManyWithoutEmoticonNestedInput
   privateMessages?: Prisma.PrivateMessageUpdateManyWithoutEmoticonNestedInput
   groupMessages?: Prisma.GroupMessageUpdateManyWithoutEmoticonNestedInput
 }
@@ -964,6 +1074,7 @@ export type EmoticonUncheckedUpdateWithoutOwnerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   copiedItems?: Prisma.EmoticonUncheckedUpdateManyWithoutCopiedFromNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutEmoticonNestedInput
+  forumComments?: Prisma.ForumCommentUncheckedUpdateManyWithoutEmoticonNestedInput
   privateMessages?: Prisma.PrivateMessageUncheckedUpdateManyWithoutEmoticonNestedInput
   groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutEmoticonNestedInput
 }
@@ -991,6 +1102,7 @@ export type EmoticonUpdateWithoutCopiedFromInput = {
   owner?: Prisma.UserUpdateOneRequiredWithoutEmoticonsNestedInput
   copiedItems?: Prisma.EmoticonUpdateManyWithoutCopiedFromNestedInput
   comments?: Prisma.CommentUpdateManyWithoutEmoticonNestedInput
+  forumComments?: Prisma.ForumCommentUpdateManyWithoutEmoticonNestedInput
   privateMessages?: Prisma.PrivateMessageUpdateManyWithoutEmoticonNestedInput
   groupMessages?: Prisma.GroupMessageUpdateManyWithoutEmoticonNestedInput
 }
@@ -1003,6 +1115,7 @@ export type EmoticonUncheckedUpdateWithoutCopiedFromInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   copiedItems?: Prisma.EmoticonUncheckedUpdateManyWithoutCopiedFromNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutEmoticonNestedInput
+  forumComments?: Prisma.ForumCommentUncheckedUpdateManyWithoutEmoticonNestedInput
   privateMessages?: Prisma.PrivateMessageUncheckedUpdateManyWithoutEmoticonNestedInput
   groupMessages?: Prisma.GroupMessageUncheckedUpdateManyWithoutEmoticonNestedInput
 }
@@ -1023,6 +1136,7 @@ export type EmoticonUncheckedUpdateManyWithoutCopiedFromInput = {
 export type EmoticonCountOutputType = {
   copiedItems: number
   comments: number
+  forumComments: number
   privateMessages: number
   groupMessages: number
 }
@@ -1030,6 +1144,7 @@ export type EmoticonCountOutputType = {
 export type EmoticonCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   copiedItems?: boolean | EmoticonCountOutputTypeCountCopiedItemsArgs
   comments?: boolean | EmoticonCountOutputTypeCountCommentsArgs
+  forumComments?: boolean | EmoticonCountOutputTypeCountForumCommentsArgs
   privateMessages?: boolean | EmoticonCountOutputTypeCountPrivateMessagesArgs
   groupMessages?: boolean | EmoticonCountOutputTypeCountGroupMessagesArgs
 }
@@ -1061,6 +1176,13 @@ export type EmoticonCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Typ
 /**
  * EmoticonCountOutputType without action
  */
+export type EmoticonCountOutputTypeCountForumCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ForumCommentWhereInput
+}
+
+/**
+ * EmoticonCountOutputType without action
+ */
 export type EmoticonCountOutputTypeCountPrivateMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PrivateMessageWhereInput
 }
@@ -1084,6 +1206,7 @@ export type EmoticonSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   copiedFrom?: boolean | Prisma.Emoticon$copiedFromArgs<ExtArgs>
   copiedItems?: boolean | Prisma.Emoticon$copiedItemsArgs<ExtArgs>
   comments?: boolean | Prisma.Emoticon$commentsArgs<ExtArgs>
+  forumComments?: boolean | Prisma.Emoticon$forumCommentsArgs<ExtArgs>
   privateMessages?: boolean | Prisma.Emoticon$privateMessagesArgs<ExtArgs>
   groupMessages?: boolean | Prisma.Emoticon$groupMessagesArgs<ExtArgs>
   _count?: boolean | Prisma.EmoticonCountOutputTypeDefaultArgs<ExtArgs>
@@ -1126,6 +1249,7 @@ export type EmoticonInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   copiedFrom?: boolean | Prisma.Emoticon$copiedFromArgs<ExtArgs>
   copiedItems?: boolean | Prisma.Emoticon$copiedItemsArgs<ExtArgs>
   comments?: boolean | Prisma.Emoticon$commentsArgs<ExtArgs>
+  forumComments?: boolean | Prisma.Emoticon$forumCommentsArgs<ExtArgs>
   privateMessages?: boolean | Prisma.Emoticon$privateMessagesArgs<ExtArgs>
   groupMessages?: boolean | Prisma.Emoticon$groupMessagesArgs<ExtArgs>
   _count?: boolean | Prisma.EmoticonCountOutputTypeDefaultArgs<ExtArgs>
@@ -1146,6 +1270,7 @@ export type $EmoticonPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     copiedFrom: Prisma.$EmoticonPayload<ExtArgs> | null
     copiedItems: Prisma.$EmoticonPayload<ExtArgs>[]
     comments: Prisma.$CommentPayload<ExtArgs>[]
+    forumComments: Prisma.$ForumCommentPayload<ExtArgs>[]
     privateMessages: Prisma.$PrivateMessagePayload<ExtArgs>[]
     groupMessages: Prisma.$GroupMessagePayload<ExtArgs>[]
   }
@@ -1554,6 +1679,7 @@ export interface Prisma__EmoticonClient<T, Null = never, ExtArgs extends runtime
   copiedFrom<T extends Prisma.Emoticon$copiedFromArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Emoticon$copiedFromArgs<ExtArgs>>): Prisma.Prisma__EmoticonClient<runtime.Types.Result.GetResult<Prisma.$EmoticonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   copiedItems<T extends Prisma.Emoticon$copiedItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Emoticon$copiedItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmoticonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comments<T extends Prisma.Emoticon$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Emoticon$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  forumComments<T extends Prisma.Emoticon$forumCommentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Emoticon$forumCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ForumCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   privateMessages<T extends Prisma.Emoticon$privateMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Emoticon$privateMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PrivateMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   groupMessages<T extends Prisma.Emoticon$groupMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Emoticon$groupMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GroupMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2054,6 +2180,30 @@ export type Emoticon$commentsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
+}
+
+/**
+ * Emoticon.forumComments
+ */
+export type Emoticon$forumCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ForumComment
+   */
+  select?: Prisma.ForumCommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ForumComment
+   */
+  omit?: Prisma.ForumCommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ForumCommentInclude<ExtArgs> | null
+  where?: Prisma.ForumCommentWhereInput
+  orderBy?: Prisma.ForumCommentOrderByWithRelationInput | Prisma.ForumCommentOrderByWithRelationInput[]
+  cursor?: Prisma.ForumCommentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ForumCommentScalarFieldEnum | Prisma.ForumCommentScalarFieldEnum[]
 }
 
 /**

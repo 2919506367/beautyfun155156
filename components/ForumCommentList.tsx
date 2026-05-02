@@ -5,7 +5,14 @@ import { useRouter } from "next/navigation";
 import ForumCommentActions from "@/components/ForumCommentActions";
 import ForumCommentComposer from "@/components/ForumCommentComposer";
 import ForumCommentContent from "@/components/ForumCommentContent";
+import FavoriteEmoticonButton from "@/components/FavoriteEmoticonButton";
 import UserIdentity from "@/components/UserIdentity";
+
+type ForumCommentEmoticon = {
+  id: number;
+  label: string | null;
+  imageUrl: string;
+};
 
 type CommentNode = {
   id: number;
@@ -14,6 +21,7 @@ type CommentNode = {
   editedAt?: string | null;
   isHidden: boolean;
   userId: number;
+  emoticon?: ForumCommentEmoticon | null;
   user: {
     id: number;
     nickname: string;
@@ -126,11 +134,27 @@ function CommentNodeView({
           </div>
         </div>
 
-        <ForumCommentContent
-          content={node.content}
-          isHidden={node.isHidden}
-          editedAt={node.editedAt || null}
-        />
+        {node.content.trim() && (
+          <ForumCommentContent
+            content={node.content}
+            isHidden={node.isHidden}
+            editedAt={node.editedAt || null}
+          />
+        )}
+
+        {!node.isHidden && node.emoticon && (
+          <div className="work-comment-emoticon-block">
+            <img
+              src={node.emoticon.imageUrl}
+              alt={node.emoticon.label || "表情包"}
+              className="work-comment-emoticon-image"
+            />
+
+            <div className="work-comment-emoticon-action">
+              <FavoriteEmoticonButton emoticonId={node.emoticon.id} />
+            </div>
+          </div>
+        )}
 
         {currentUserId && (
           <ForumCommentActions

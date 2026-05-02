@@ -73,7 +73,10 @@ export default async function SearchPage({
   const currentPage = Math.max(1, Number(params.page || "1") || 1);
   const workType = type === "FOLDER" || type === "GIF" || type === "VIDEO" ? type : "";
   const tag = String(params.tag || "").trim();
-  const show16 = String(params.show16 || "") === "true";
+  const requestedShow16 = String(params.show16 || "") === "true";
+  const canUseShow16 = user?.role === "GOLD" || user?.role === "ADMIN";
+  const isAdmin = user?.role === "ADMIN";
+  const show16 = requestedShow16 && canUseShow16;
 
   const where =
     keyword || workType || tag || !show16
@@ -82,6 +85,7 @@ export default async function SearchPage({
           ...(workType ? { type: workType as "FOLDER" | "GIF" | "VIDEO" } : {}),
           ...(tag ? { tags: { contains: tag } } : {}),
           ...(!show16 ? { ageRating: "ALL_AGES" as const } : {}),
+          ...(!isAdmin ? { isPublic: true } : {}),
         }
       : undefined;
 
@@ -141,7 +145,7 @@ export default async function SearchPage({
               <div className="bf-stats-grid" style={{ gridTemplateColumns: "1fr" }}>
                 <MiniStat label="当前模式" value={mode === "user" ? "用户" : "作品"} />
                 <MiniStat label="结果数量" value={String(totalCount)} />
-                <MiniStat label="16+" value={show16 ? "显示" : "隐藏"} />
+                <MiniStat label="16+" value={show16 ? "显示" : canUseShow16 ? "隐藏" : "隐藏（普通用户不可开启）"} />
               </div>
             </aside>
           </div>
@@ -153,7 +157,9 @@ export default async function SearchPage({
             <input name="tag" defaultValue={tag} placeholder="按标签筛选" />
             <select name="show16" defaultValue={show16 ? "true" : "false"}>
               <option value="false">隐藏16+</option>
-              <option value="true">显示16+</option>
+              <option value="true" disabled={!canUseShow16}>
+                {canUseShow16 ? "显示16+" : "显示16+（会员）"}
+              </option>
             </select>
             <select name="type" defaultValue={workType}>
               <option value="">全部类型</option>

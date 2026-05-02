@@ -55,6 +55,7 @@ model Work {
   coverUrl            String?
   tags                String   @default("")
   ageRating           AgeRating @default(AGE_16_PLUS)
+  isPublic            Boolean   @default(true)
   sourceKey           String?  @unique
   viewCount           Int      @default(0)
   createdAt           DateTime @default(now())
@@ -215,6 +216,7 @@ model Emoticon {
   copiedFrom      Emoticon?        @relation("EmoticonCopy", fields: [copiedFromId], references: [id], onDelete: SetNull)
   copiedItems     Emoticon[]       @relation("EmoticonCopy")
   comments        Comment[]
+  forumComments   ForumComment[]
   privateMessages PrivateMessage[]
   groupMessages   GroupMessage[]
 
@@ -310,6 +312,7 @@ model ForumComment {
   postId     Int
   userId     Int
   parentId   Int?
+  emoticonId Int?
   content    String
   isHidden   Boolean            @default(false)
   editedAt   DateTime?
@@ -317,6 +320,7 @@ model ForumComment {
 
   post       ForumPost          @relation(fields: [postId], references: [id], onDelete: Cascade)
   user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  emoticon   Emoticon?          @relation(fields: [emoticonId], references: [id], onDelete: SetNull)
   parent     ForumComment?      @relation("ForumCommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
   replies    ForumComment[]     @relation("ForumCommentReplies")
   likes      ForumCommentLike[]

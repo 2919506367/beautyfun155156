@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import InlineActionNotice from "@/components/InlineActionNotice";
 import EmoticonPicker from "@/components/EmoticonPicker";
@@ -109,14 +110,12 @@ export default function CommentForm({ workId }: { workId: number }) {
 
       <div className="comment-telegram-stage">
         {showEmoticonPicker && (
-          <div className="comment-telegram-picker-popover">
-            <EmoticonPicker
-              selectedId={emoticonId}
-              onSelect={setEmoticonId}
-              onEmojiSelect={insertEmoji}
-              onClose={() => setShowEmoticonPicker(false)}
-            />
-          </div>
+          <FloatingCommentEmoticonPicker
+            selectedId={emoticonId}
+            onSelect={setEmoticonId}
+            onEmojiSelect={insertEmoji}
+            onClose={() => setShowEmoticonPicker(false)}
+          />
         )}
 
         {emoticonId !== null && (
@@ -139,7 +138,7 @@ export default function CommentForm({ workId }: { workId: number }) {
             onChange={(e) => setContent(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="写下你的评论..."
-            rows={1}
+            rows={2}
             className="comment-telegram-textarea"
           />
 
@@ -163,5 +162,62 @@ export default function CommentForm({ workId }: { workId: number }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function FloatingCommentEmoticonPicker({
+  selectedId,
+  onSelect,
+  onEmojiSelect,
+  onClose,
+}: {
+  selectedId: number | null;
+  onSelect: (id: number | null) => void;
+  onEmojiSelect: (emoji: string) => void;
+  onClose: () => void;
+}) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  return createPortal(
+    <div
+      onMouseDown={(e) => e.stopPropagation()}
+      style={{
+        position: "fixed",
+        left: "50%",
+        bottom: 104,
+        width: "min(520px, calc(100vw - 32px))",
+        transform: "translateX(-50%)",
+        zIndex: 2147483646,
+      }}
+    >
+      <div
+        className="comment-telegram-composer"
+        style={{
+          margin: 0,
+          padding: 0,
+          border: 0,
+          borderRadius: 16,
+          background: "transparent",
+          boxShadow: "0 26px 72px rgba(0,0,0,0.34)",
+          backdropFilter: "none",
+          WebkitBackdropFilter: "none",
+          overflow: "visible",
+        }}
+      >
+        <EmoticonPicker
+          selectedId={selectedId}
+          onSelect={onSelect}
+          onEmojiSelect={onEmojiSelect}
+          onClose={onClose}
+        />
+      </div>
+    </div>,
+    document.body
   );
 }

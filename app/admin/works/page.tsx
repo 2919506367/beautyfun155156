@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import SiteLayout from "@/components/SiteLayout";
 import AdminDeleteWorkInlineButton from "@/components/AdminDeleteWorkInlineButton";
+import AdminToggleWorkPublicButton from "@/components/AdminToggleWorkPublicButton";
 import VideoFrameCover from "@/components/VideoFrameCover";
 
 const PAGE_SIZE = 30;
@@ -152,6 +153,9 @@ export default async function AdminWorksPage({
                         <span className={work.ageRating === "AGE_16_PLUS" ? "cel-pill cel-pill-danger" : "cel-pill"}>
                           {work.ageRating === "AGE_16_PLUS" ? "16+" : "全年龄"}
                         </span>
+                        <span className={work.isPublic ? "cel-pill" : "cel-pill cel-pill-danger"}>
+                          {work.isPublic ? "对外开放" : "仅管理员可见"}
+                        </span>
                         <span className="cel-pill">浏览 {work.viewCount}</span>
                         <span className="cel-pill">媒体 {work.files.length}</span>
                       </div>
@@ -163,6 +167,7 @@ export default async function AdminWorksPage({
 
                     <div className="cel-action-row" style={{ justifyContent: "flex-end" }}>
                       <Link href={`/works/${work.id}`} className="cel-button-light">查看详情</Link>
+                      <AdminToggleWorkPublicButton workId={work.id} initialIsPublic={work.isPublic} />
                       <AdminDeleteWorkInlineButton workId={work.id} title={work.title} />
                     </div>
                   </article>

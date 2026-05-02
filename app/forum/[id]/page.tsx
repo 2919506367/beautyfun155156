@@ -81,6 +81,13 @@ export default async function ForumPostDetailPage({
         },
       },
       likes: true,
+      emoticon: {
+        select: {
+          id: true,
+          label: true,
+          imageUrl: true,
+        },
+      },
     },
   });
 
@@ -113,6 +120,7 @@ export default async function ForumPostDetailPage({
       editedAt: comment.editedAt ? comment.editedAt.toISOString() : null,
       isHidden: comment.isHidden,
       userId: comment.userId,
+      emoticon: comment.emoticon,
       user: comment.user,
       likeCount: comment.likes.length,
       likedByMe: currentUser

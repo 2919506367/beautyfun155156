@@ -22,8 +22,15 @@ export default async function WorksGridSection({
   show16?: boolean;
 }) {
   const user = await getCurrentUser();
+  const canUseShow16 = user?.role === "GOLD" || user?.role === "ADMIN";
+  const effectiveShow16 = show16 && canUseShow16;
+  const isAdmin = user?.role === "ADMIN";
 
-  const where = {
+  const where: {
+    type: "FOLDER" | "GIF" | "VIDEO";
+    tags?: { contains: string };
+    isPublic?: boolean;
+  } = {
     type,
     ...(tag
       ? {
@@ -32,6 +39,7 @@ export default async function WorksGridSection({
           },
         }
       : {}),
+    ...(!isAdmin ? { isPublic: true } : {}),
   };
 
   const totalWorks = await prisma.work.count({
@@ -66,7 +74,7 @@ export default async function WorksGridSection({
   function buildBasePath() {
     const usp = new URLSearchParams();
     if (tag) usp.set("tag", tag);
-    if (show16) usp.set("show16", "true");
+    if (effectiveShow16) usp.set("show16", "true");
     return `${basePath}?${usp.toString()}`;
   }
 
@@ -83,7 +91,8 @@ export default async function WorksGridSection({
           <div className="content-panel-title">{title}</div>
           <div className="content-panel-subtitle">
             第 {currentPage} / {totalPages} 页　/　标签：{tag || "未筛选"}　/　16+：
-            {show16 ? "显示" : "隐藏"}
+            {effectiveShow16 ? "显示" : "隐藏"}
+            {!canUseShow16 && "（普通用户不可开启）"}
           </div>
         </div>
 
@@ -144,7 +153,7 @@ export default async function WorksGridSection({
             background: "rgba(255,255,255,0.16)",
           }}
         >
-          <Show16PreferenceSelect currentValue={show16} currentPath={basePath} tag={tag} />
+          <Show16PreferenceSelect currentValue={effectiveShow16} currentPath={basePath} tag={tag} canUseShow16={canUseShow16} />
         </div>
 
         <button
@@ -196,7 +205,7 @@ export default async function WorksGridSection({
 
             if (!user) {
               accessMode = "login_required";
-            } else if (work.ageRating === "AGE_16_PLUS" && !show16) {
+            } else if (work.ageRating === "AGE_16_PLUS" && !effectiveShow16) {
               accessMode = "age_locked";
             } else if (work.viewCount >= 99 && user.role === "BASIC") {
               accessMode = "hot_locked";
@@ -205,7 +214,7 @@ export default async function WorksGridSection({
             return (
               <WorkCardLite
                 key={work.id}
-                href={`/works/${work.id}${show16 ? "?show16=true" : ""}`}
+                href={`/works/${work.id}${effectiveShow16 ? "?show16=true" : ""}`}
                 title={work.title}
                 type={work.type}
                 authorId={work.author.id}
@@ -219,7 +228,7 @@ export default async function WorksGridSection({
                 viewCount={work.viewCount}
                 tags={work.tags || ""}
                 ageRating={work.ageRating}
-                blurCover={work.ageRating === "AGE_16_PLUS" && !show16}
+                blurCover={work.ageRating === "AGE_16_PLUS" && !effectiveShow16}
                 accessMode={accessMode}
               />
             );

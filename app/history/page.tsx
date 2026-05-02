@@ -39,11 +39,17 @@ export default async function HistoryPage({
     );
   }
 
-  const totalCount = await prisma.viewHistory.count({ where: { userId: user.id } });
+  const isAdmin = user.role === "ADMIN";
+  const historyWhere = {
+    userId: user.id,
+    ...(!isAdmin ? { work: { isPublic: true } } : {}),
+  };
+
+  const totalCount = await prisma.viewHistory.count({ where: historyWhere });
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 
   const histories = await prisma.viewHistory.findMany({
-    where: { userId: user.id },
+    where: historyWhere,
     orderBy: { viewedAt: "desc" },
     skip: (currentPage - 1) * PAGE_SIZE,
     take: PAGE_SIZE,

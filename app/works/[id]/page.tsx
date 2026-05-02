@@ -6,6 +6,7 @@ import CommentForm from "@/components/CommentForm";
 import HistoryRecorder from "@/components/HistoryRecorder";
 import FavoriteButton from "@/components/FavoriteButton";
 import AdminDeleteWorkButton from "@/components/AdminDeleteWorkButton";
+import AdminToggleWorkPublicButton from "@/components/AdminToggleWorkPublicButton";
 import SiteLayout from "@/components/SiteLayout";
 import WorkBackButtons from "@/components/WorkBackButtons";
 import RecommendationPanel from "@/components/RecommendationPanel";
@@ -58,7 +59,7 @@ export default async function WorkDetailPage({
   const cookieStore = await cookies();
 
   const cookieShow16 = cookieStore.get("bf_show16")?.value === "true";
-  const show16 =
+  const requestedShow16 =
     typeof sp.show16 === "string" ? sp.show16 === "true" : cookieShow16;
 
   if (!workId || Number.isNaN(workId)) {
@@ -74,6 +75,10 @@ export default async function WorkDetailPage({
   if (!user) {
     redirect("/login");
   }
+
+  const canUseShow16 = user.role === "GOLD" || user.role === "ADMIN";
+  const show16 = requestedShow16 && canUseShow16;
+  const isAdmin = user.role === "ADMIN";
 
   const work = await prisma.work.findUnique({
     where: { id: workId },
@@ -97,6 +102,22 @@ export default async function WorkDetailPage({
     return (
       <SiteLayout title="作品不存在" active="folders">
         <div style={panelStyle}>作品不存在</div>
+      </SiteLayout>
+    );
+  }
+
+  if (!work.isPublic && !isAdmin) {
+    return (
+      <SiteLayout title="作品不可访问" active="folders">
+        <div style={panelStyle}>
+          <h2 style={{ marginTop: 0, marginBottom: 12, color: "var(--bf-panel-text)" }}>
+            作品不可访问
+          </h2>
+          <div style={{ color: "var(--bf-panel-text-soft)", marginBottom: 20 }}>
+            当前作品暂未对外开放，只有管理员可以查看。
+          </div>
+          <WorkBackButtons />
+        </div>
       </SiteLayout>
     );
   }
@@ -143,6 +164,7 @@ export default async function WorkDetailPage({
     where: {
       id: { not: work.id },
       type: work.type,
+      ...(!isAdmin ? { isPublic: true } : {}),
     },
     orderBy: [{ viewCount: "desc" }, { createdAt: "desc" }],
     take: 24,
@@ -213,6 +235,11 @@ export default async function WorkDetailPage({
                   </GlassMetaPill>
                   <GlassMetaPill>浏览 {work.viewCount}</GlassMetaPill>
                   <GlassMetaPill>{work.files.length} 项内容</GlassMetaPill>
+                  {isAdmin && (
+                    <GlassMetaPill tone={work.isPublic ? "normal" : "danger"}>
+                      {work.isPublic ? "对外开放" : "仅管理员可见"}
+                    </GlassMetaPill>
+                  )}
                 </div>
 
                 <div className="work-upload-pill">
@@ -297,6 +324,9 @@ export default async function WorkDetailPage({
                       转发到群聊
                     </GlassLinkButton>
                     <FavoriteButton workId={work.id} initialFavorited={isFavorited} />
+                    {user.role === "ADMIN" && (
+                      <AdminToggleWorkPublicButton workId={work.id} initialIsPublic={work.isPublic} />
+                    )}
                     {user.role === "ADMIN" && <AdminDeleteWorkButton workId={work.id} />}
                   </div>
                 </InfoBlock>

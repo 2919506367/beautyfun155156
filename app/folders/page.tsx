@@ -2,6 +2,7 @@ import SiteLayout from "@/components/SiteLayout";
 import WorksGridSection from "@/components/WorksGridSection";
 import ListPageMemory from "@/components/ListPageMemory";
 import { cookies } from "next/headers";
+import { getCurrentUser } from "@/lib/auth";
 
 export default async function FoldersPage({
   searchParams,
@@ -9,16 +10,19 @@ export default async function FoldersPage({
   searchParams: Promise<{ page?: string; tag?: string; show16?: string }>;
 }) {
   const params = await searchParams;
+  const user = await getCurrentUser();
   const cookieStore = await cookies();
 
   const currentPage = Math.max(1, Number(params.page || "1") || 1);
   const tag = String(params.tag || "").trim();
 
   const cookieShow16 = cookieStore.get("bf_show16")?.value === "true";
-  const show16 =
+  const requestedShow16 =
     typeof params.show16 === "string"
       ? params.show16 === "true"
       : cookieShow16;
+  const canUseShow16 = user?.role === "GOLD" || user?.role === "ADMIN";
+  const show16 = requestedShow16 && canUseShow16;
 
   return (
     <SiteLayout title="图集区" active="folders" hidePageHead>

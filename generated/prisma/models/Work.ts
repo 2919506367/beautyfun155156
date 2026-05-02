@@ -46,6 +46,7 @@ export type WorkMinAggregateOutputType = {
   coverUrl: string | null
   tags: string | null
   ageRating: $Enums.AgeRating | null
+  isPublic: boolean | null
   sourceKey: string | null
   viewCount: number | null
   createdAt: Date | null
@@ -61,6 +62,7 @@ export type WorkMaxAggregateOutputType = {
   coverUrl: string | null
   tags: string | null
   ageRating: $Enums.AgeRating | null
+  isPublic: boolean | null
   sourceKey: string | null
   viewCount: number | null
   createdAt: Date | null
@@ -76,6 +78,7 @@ export type WorkCountAggregateOutputType = {
   coverUrl: number
   tags: number
   ageRating: number
+  isPublic: number
   sourceKey: number
   viewCount: number
   createdAt: number
@@ -105,6 +108,7 @@ export type WorkMinAggregateInputType = {
   coverUrl?: true
   tags?: true
   ageRating?: true
+  isPublic?: true
   sourceKey?: true
   viewCount?: true
   createdAt?: true
@@ -120,6 +124,7 @@ export type WorkMaxAggregateInputType = {
   coverUrl?: true
   tags?: true
   ageRating?: true
+  isPublic?: true
   sourceKey?: true
   viewCount?: true
   createdAt?: true
@@ -135,6 +140,7 @@ export type WorkCountAggregateInputType = {
   coverUrl?: true
   tags?: true
   ageRating?: true
+  isPublic?: true
   sourceKey?: true
   viewCount?: true
   createdAt?: true
@@ -237,6 +243,7 @@ export type WorkGroupByOutputType = {
   coverUrl: string | null
   tags: string
   ageRating: $Enums.AgeRating
+  isPublic: boolean
   sourceKey: string | null
   viewCount: number
   createdAt: Date
@@ -275,6 +282,7 @@ export type WorkWhereInput = {
   coverUrl?: Prisma.StringNullableFilter<"Work"> | string | null
   tags?: Prisma.StringFilter<"Work"> | string
   ageRating?: Prisma.EnumAgeRatingFilter<"Work"> | $Enums.AgeRating
+  isPublic?: Prisma.BoolFilter<"Work"> | boolean
   sourceKey?: Prisma.StringNullableFilter<"Work"> | string | null
   viewCount?: Prisma.IntFilter<"Work"> | number
   createdAt?: Prisma.DateTimeFilter<"Work"> | Date | string
@@ -297,6 +305,7 @@ export type WorkOrderByWithRelationInput = {
   coverUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   tags?: Prisma.SortOrder
   ageRating?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
   sourceKey?: Prisma.SortOrderInput | Prisma.SortOrder
   viewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -323,6 +332,7 @@ export type WorkWhereUniqueInput = Prisma.AtLeast<{
   coverUrl?: Prisma.StringNullableFilter<"Work"> | string | null
   tags?: Prisma.StringFilter<"Work"> | string
   ageRating?: Prisma.EnumAgeRatingFilter<"Work"> | $Enums.AgeRating
+  isPublic?: Prisma.BoolFilter<"Work"> | boolean
   viewCount?: Prisma.IntFilter<"Work"> | number
   createdAt?: Prisma.DateTimeFilter<"Work"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Work"> | Date | string
@@ -344,6 +354,7 @@ export type WorkOrderByWithAggregationInput = {
   coverUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   tags?: Prisma.SortOrder
   ageRating?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
   sourceKey?: Prisma.SortOrderInput | Prisma.SortOrder
   viewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -367,6 +378,7 @@ export type WorkScalarWhereWithAggregatesInput = {
   coverUrl?: Prisma.StringNullableWithAggregatesFilter<"Work"> | string | null
   tags?: Prisma.StringWithAggregatesFilter<"Work"> | string
   ageRating?: Prisma.EnumAgeRatingWithAggregatesFilter<"Work"> | $Enums.AgeRating
+  isPublic?: Prisma.BoolWithAggregatesFilter<"Work"> | boolean
   sourceKey?: Prisma.StringNullableWithAggregatesFilter<"Work"> | string | null
   viewCount?: Prisma.IntWithAggregatesFilter<"Work"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Work"> | Date | string
@@ -381,6 +393,7 @@ export type WorkCreateInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -402,6 +415,7 @@ export type WorkUncheckedCreateInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -422,6 +436,7 @@ export type WorkUpdateInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -443,6 +458,7 @@ export type WorkUncheckedUpdateInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -464,6 +480,7 @@ export type WorkCreateManyInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -478,6 +495,7 @@ export type WorkUpdateManyMutationInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -492,6 +510,7 @@ export type WorkUncheckedUpdateManyInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -517,6 +536,7 @@ export type WorkCountOrderByAggregateInput = {
   coverUrl?: Prisma.SortOrder
   tags?: Prisma.SortOrder
   ageRating?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
   sourceKey?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -538,6 +558,7 @@ export type WorkMaxOrderByAggregateInput = {
   coverUrl?: Prisma.SortOrder
   tags?: Prisma.SortOrder
   ageRating?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
   sourceKey?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -553,6 +574,7 @@ export type WorkMinOrderByAggregateInput = {
   coverUrl?: Prisma.SortOrder
   tags?: Prisma.SortOrder
   ageRating?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
   sourceKey?: Prisma.SortOrder
   viewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -721,6 +743,7 @@ export type WorkCreateWithoutAuthorInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -741,6 +764,7 @@ export type WorkUncheckedCreateWithoutAuthorInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -789,6 +813,7 @@ export type WorkScalarWhereInput = {
   coverUrl?: Prisma.StringNullableFilter<"Work"> | string | null
   tags?: Prisma.StringFilter<"Work"> | string
   ageRating?: Prisma.EnumAgeRatingFilter<"Work"> | $Enums.AgeRating
+  isPublic?: Prisma.BoolFilter<"Work"> | boolean
   sourceKey?: Prisma.StringNullableFilter<"Work"> | string | null
   viewCount?: Prisma.IntFilter<"Work"> | number
   createdAt?: Prisma.DateTimeFilter<"Work"> | Date | string
@@ -803,6 +828,7 @@ export type WorkCreateWithoutFilesInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -823,6 +849,7 @@ export type WorkUncheckedCreateWithoutFilesInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -858,6 +885,7 @@ export type WorkUpdateWithoutFilesInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -878,6 +906,7 @@ export type WorkUncheckedUpdateWithoutFilesInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -897,6 +926,7 @@ export type WorkCreateWithoutCommentsInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -917,6 +947,7 @@ export type WorkUncheckedCreateWithoutCommentsInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -952,6 +983,7 @@ export type WorkUpdateWithoutCommentsInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -972,6 +1004,7 @@ export type WorkUncheckedUpdateWithoutCommentsInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -991,6 +1024,7 @@ export type WorkCreateWithoutFavoritesInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -1011,6 +1045,7 @@ export type WorkUncheckedCreateWithoutFavoritesInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -1046,6 +1081,7 @@ export type WorkUpdateWithoutFavoritesInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1066,6 +1102,7 @@ export type WorkUncheckedUpdateWithoutFavoritesInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1085,6 +1122,7 @@ export type WorkCreateWithoutSharedMessagesInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -1105,6 +1143,7 @@ export type WorkUncheckedCreateWithoutSharedMessagesInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -1140,6 +1179,7 @@ export type WorkUpdateWithoutSharedMessagesInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1160,6 +1200,7 @@ export type WorkUncheckedUpdateWithoutSharedMessagesInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1179,6 +1220,7 @@ export type WorkCreateWithoutSharedGroupMessagesInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -1199,6 +1241,7 @@ export type WorkUncheckedCreateWithoutSharedGroupMessagesInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -1234,6 +1277,7 @@ export type WorkUpdateWithoutSharedGroupMessagesInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1254,6 +1298,7 @@ export type WorkUncheckedUpdateWithoutSharedGroupMessagesInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1273,6 +1318,7 @@ export type WorkCreateWithoutHistoriesInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -1293,6 +1339,7 @@ export type WorkUncheckedCreateWithoutHistoriesInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -1328,6 +1375,7 @@ export type WorkUpdateWithoutHistoriesInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1348,6 +1396,7 @@ export type WorkUncheckedUpdateWithoutHistoriesInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1368,6 +1417,7 @@ export type WorkCreateManyAuthorInput = {
   coverUrl?: string | null
   tags?: string
   ageRating?: $Enums.AgeRating
+  isPublic?: boolean
   sourceKey?: string | null
   viewCount?: number
   createdAt?: Date | string
@@ -1381,6 +1431,7 @@ export type WorkUpdateWithoutAuthorInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1401,6 +1452,7 @@ export type WorkUncheckedUpdateWithoutAuthorInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1421,6 +1473,7 @@ export type WorkUncheckedUpdateManyWithoutAuthorInput = {
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.StringFieldUpdateOperationsInput | string
   ageRating?: Prisma.EnumAgeRatingFieldUpdateOperationsInput | $Enums.AgeRating
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1511,6 +1564,7 @@ export type WorkSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   coverUrl?: boolean
   tags?: boolean
   ageRating?: boolean
+  isPublic?: boolean
   sourceKey?: boolean
   viewCount?: boolean
   createdAt?: boolean
@@ -1534,6 +1588,7 @@ export type WorkSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   coverUrl?: boolean
   tags?: boolean
   ageRating?: boolean
+  isPublic?: boolean
   sourceKey?: boolean
   viewCount?: boolean
   createdAt?: boolean
@@ -1550,6 +1605,7 @@ export type WorkSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   coverUrl?: boolean
   tags?: boolean
   ageRating?: boolean
+  isPublic?: boolean
   sourceKey?: boolean
   viewCount?: boolean
   createdAt?: boolean
@@ -1566,6 +1622,7 @@ export type WorkSelectScalar = {
   coverUrl?: boolean
   tags?: boolean
   ageRating?: boolean
+  isPublic?: boolean
   sourceKey?: boolean
   viewCount?: boolean
   createdAt?: boolean
@@ -1573,7 +1630,7 @@ export type WorkSelectScalar = {
   authorId?: boolean
 }
 
-export type WorkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "title" | "description" | "coverUrl" | "tags" | "ageRating" | "sourceKey" | "viewCount" | "createdAt" | "updatedAt" | "authorId", ExtArgs["result"]["work"]>
+export type WorkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "title" | "description" | "coverUrl" | "tags" | "ageRating" | "isPublic" | "sourceKey" | "viewCount" | "createdAt" | "updatedAt" | "authorId", ExtArgs["result"]["work"]>
 export type WorkInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   files?: boolean | Prisma.Work$filesArgs<ExtArgs>
@@ -1610,6 +1667,7 @@ export type $WorkPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     coverUrl: string | null
     tags: string
     ageRating: $Enums.AgeRating
+    isPublic: boolean
     sourceKey: string | null
     viewCount: number
     createdAt: Date
@@ -2052,6 +2110,7 @@ export interface WorkFieldRefs {
   readonly coverUrl: Prisma.FieldRef<"Work", 'String'>
   readonly tags: Prisma.FieldRef<"Work", 'String'>
   readonly ageRating: Prisma.FieldRef<"Work", 'AgeRating'>
+  readonly isPublic: Prisma.FieldRef<"Work", 'Boolean'>
   readonly sourceKey: Prisma.FieldRef<"Work", 'String'>
   readonly viewCount: Prisma.FieldRef<"Work", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Work", 'DateTime'>

@@ -31,6 +31,7 @@ export type ForumCommentAvgAggregateOutputType = {
   postId: number | null
   userId: number | null
   parentId: number | null
+  emoticonId: number | null
 }
 
 export type ForumCommentSumAggregateOutputType = {
@@ -38,6 +39,7 @@ export type ForumCommentSumAggregateOutputType = {
   postId: number | null
   userId: number | null
   parentId: number | null
+  emoticonId: number | null
 }
 
 export type ForumCommentMinAggregateOutputType = {
@@ -45,6 +47,7 @@ export type ForumCommentMinAggregateOutputType = {
   postId: number | null
   userId: number | null
   parentId: number | null
+  emoticonId: number | null
   content: string | null
   isHidden: boolean | null
   editedAt: Date | null
@@ -56,6 +59,7 @@ export type ForumCommentMaxAggregateOutputType = {
   postId: number | null
   userId: number | null
   parentId: number | null
+  emoticonId: number | null
   content: string | null
   isHidden: boolean | null
   editedAt: Date | null
@@ -67,6 +71,7 @@ export type ForumCommentCountAggregateOutputType = {
   postId: number
   userId: number
   parentId: number
+  emoticonId: number
   content: number
   isHidden: number
   editedAt: number
@@ -80,6 +85,7 @@ export type ForumCommentAvgAggregateInputType = {
   postId?: true
   userId?: true
   parentId?: true
+  emoticonId?: true
 }
 
 export type ForumCommentSumAggregateInputType = {
@@ -87,6 +93,7 @@ export type ForumCommentSumAggregateInputType = {
   postId?: true
   userId?: true
   parentId?: true
+  emoticonId?: true
 }
 
 export type ForumCommentMinAggregateInputType = {
@@ -94,6 +101,7 @@ export type ForumCommentMinAggregateInputType = {
   postId?: true
   userId?: true
   parentId?: true
+  emoticonId?: true
   content?: true
   isHidden?: true
   editedAt?: true
@@ -105,6 +113,7 @@ export type ForumCommentMaxAggregateInputType = {
   postId?: true
   userId?: true
   parentId?: true
+  emoticonId?: true
   content?: true
   isHidden?: true
   editedAt?: true
@@ -116,6 +125,7 @@ export type ForumCommentCountAggregateInputType = {
   postId?: true
   userId?: true
   parentId?: true
+  emoticonId?: true
   content?: true
   isHidden?: true
   editedAt?: true
@@ -214,6 +224,7 @@ export type ForumCommentGroupByOutputType = {
   postId: number
   userId: number
   parentId: number | null
+  emoticonId: number | null
   content: string
   isHidden: boolean
   editedAt: Date | null
@@ -248,12 +259,14 @@ export type ForumCommentWhereInput = {
   postId?: Prisma.IntFilter<"ForumComment"> | number
   userId?: Prisma.IntFilter<"ForumComment"> | number
   parentId?: Prisma.IntNullableFilter<"ForumComment"> | number | null
+  emoticonId?: Prisma.IntNullableFilter<"ForumComment"> | number | null
   content?: Prisma.StringFilter<"ForumComment"> | string
   isHidden?: Prisma.BoolFilter<"ForumComment"> | boolean
   editedAt?: Prisma.DateTimeNullableFilter<"ForumComment"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"ForumComment"> | Date | string
   post?: Prisma.XOR<Prisma.ForumPostScalarRelationFilter, Prisma.ForumPostWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  emoticon?: Prisma.XOR<Prisma.EmoticonNullableScalarRelationFilter, Prisma.EmoticonWhereInput> | null
   parent?: Prisma.XOR<Prisma.ForumCommentNullableScalarRelationFilter, Prisma.ForumCommentWhereInput> | null
   replies?: Prisma.ForumCommentListRelationFilter
   likes?: Prisma.ForumCommentLikeListRelationFilter
@@ -264,12 +277,14 @@ export type ForumCommentOrderByWithRelationInput = {
   postId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   parentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  emoticonId?: Prisma.SortOrderInput | Prisma.SortOrder
   content?: Prisma.SortOrder
   isHidden?: Prisma.SortOrder
   editedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   post?: Prisma.ForumPostOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
+  emoticon?: Prisma.EmoticonOrderByWithRelationInput
   parent?: Prisma.ForumCommentOrderByWithRelationInput
   replies?: Prisma.ForumCommentOrderByRelationAggregateInput
   likes?: Prisma.ForumCommentLikeOrderByRelationAggregateInput
@@ -283,12 +298,14 @@ export type ForumCommentWhereUniqueInput = Prisma.AtLeast<{
   postId?: Prisma.IntFilter<"ForumComment"> | number
   userId?: Prisma.IntFilter<"ForumComment"> | number
   parentId?: Prisma.IntNullableFilter<"ForumComment"> | number | null
+  emoticonId?: Prisma.IntNullableFilter<"ForumComment"> | number | null
   content?: Prisma.StringFilter<"ForumComment"> | string
   isHidden?: Prisma.BoolFilter<"ForumComment"> | boolean
   editedAt?: Prisma.DateTimeNullableFilter<"ForumComment"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"ForumComment"> | Date | string
   post?: Prisma.XOR<Prisma.ForumPostScalarRelationFilter, Prisma.ForumPostWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  emoticon?: Prisma.XOR<Prisma.EmoticonNullableScalarRelationFilter, Prisma.EmoticonWhereInput> | null
   parent?: Prisma.XOR<Prisma.ForumCommentNullableScalarRelationFilter, Prisma.ForumCommentWhereInput> | null
   replies?: Prisma.ForumCommentListRelationFilter
   likes?: Prisma.ForumCommentLikeListRelationFilter
@@ -299,6 +316,7 @@ export type ForumCommentOrderByWithAggregationInput = {
   postId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   parentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  emoticonId?: Prisma.SortOrderInput | Prisma.SortOrder
   content?: Prisma.SortOrder
   isHidden?: Prisma.SortOrder
   editedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -318,6 +336,7 @@ export type ForumCommentScalarWhereWithAggregatesInput = {
   postId?: Prisma.IntWithAggregatesFilter<"ForumComment"> | number
   userId?: Prisma.IntWithAggregatesFilter<"ForumComment"> | number
   parentId?: Prisma.IntNullableWithAggregatesFilter<"ForumComment"> | number | null
+  emoticonId?: Prisma.IntNullableWithAggregatesFilter<"ForumComment"> | number | null
   content?: Prisma.StringWithAggregatesFilter<"ForumComment"> | string
   isHidden?: Prisma.BoolWithAggregatesFilter<"ForumComment"> | boolean
   editedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ForumComment"> | Date | string | null
@@ -331,6 +350,7 @@ export type ForumCommentCreateInput = {
   createdAt?: Date | string
   post: Prisma.ForumPostCreateNestedOneWithoutCommentsInput
   user: Prisma.UserCreateNestedOneWithoutForumCommentsInput
+  emoticon?: Prisma.EmoticonCreateNestedOneWithoutForumCommentsInput
   parent?: Prisma.ForumCommentCreateNestedOneWithoutRepliesInput
   replies?: Prisma.ForumCommentCreateNestedManyWithoutParentInput
   likes?: Prisma.ForumCommentLikeCreateNestedManyWithoutCommentInput
@@ -341,6 +361,7 @@ export type ForumCommentUncheckedCreateInput = {
   postId: number
   userId: number
   parentId?: number | null
+  emoticonId?: number | null
   content: string
   isHidden?: boolean
   editedAt?: Date | string | null
@@ -356,6 +377,7 @@ export type ForumCommentUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   post?: Prisma.ForumPostUpdateOneRequiredWithoutCommentsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutForumCommentsNestedInput
+  emoticon?: Prisma.EmoticonUpdateOneWithoutForumCommentsNestedInput
   parent?: Prisma.ForumCommentUpdateOneWithoutRepliesNestedInput
   replies?: Prisma.ForumCommentUpdateManyWithoutParentNestedInput
   likes?: Prisma.ForumCommentLikeUpdateManyWithoutCommentNestedInput
@@ -366,6 +388,7 @@ export type ForumCommentUncheckedUpdateInput = {
   postId?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  emoticonId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
   editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -379,6 +402,7 @@ export type ForumCommentCreateManyInput = {
   postId: number
   userId: number
   parentId?: number | null
+  emoticonId?: number | null
   content: string
   isHidden?: boolean
   editedAt?: Date | string | null
@@ -397,6 +421,7 @@ export type ForumCommentUncheckedUpdateManyInput = {
   postId?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  emoticonId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
   editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -423,6 +448,7 @@ export type ForumCommentCountOrderByAggregateInput = {
   postId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
+  emoticonId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   isHidden?: Prisma.SortOrder
   editedAt?: Prisma.SortOrder
@@ -434,6 +460,7 @@ export type ForumCommentAvgOrderByAggregateInput = {
   postId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
+  emoticonId?: Prisma.SortOrder
 }
 
 export type ForumCommentMaxOrderByAggregateInput = {
@@ -441,6 +468,7 @@ export type ForumCommentMaxOrderByAggregateInput = {
   postId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
+  emoticonId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   isHidden?: Prisma.SortOrder
   editedAt?: Prisma.SortOrder
@@ -452,6 +480,7 @@ export type ForumCommentMinOrderByAggregateInput = {
   postId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
+  emoticonId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   isHidden?: Prisma.SortOrder
   editedAt?: Prisma.SortOrder
@@ -463,6 +492,7 @@ export type ForumCommentSumOrderByAggregateInput = {
   postId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   parentId?: Prisma.SortOrder
+  emoticonId?: Prisma.SortOrder
 }
 
 export type ForumCommentScalarRelationFilter = {
@@ -509,6 +539,48 @@ export type ForumCommentUncheckedUpdateManyWithoutUserNestedInput = {
   connect?: Prisma.ForumCommentWhereUniqueInput | Prisma.ForumCommentWhereUniqueInput[]
   update?: Prisma.ForumCommentUpdateWithWhereUniqueWithoutUserInput | Prisma.ForumCommentUpdateWithWhereUniqueWithoutUserInput[]
   updateMany?: Prisma.ForumCommentUpdateManyWithWhereWithoutUserInput | Prisma.ForumCommentUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ForumCommentScalarWhereInput | Prisma.ForumCommentScalarWhereInput[]
+}
+
+export type ForumCommentCreateNestedManyWithoutEmoticonInput = {
+  create?: Prisma.XOR<Prisma.ForumCommentCreateWithoutEmoticonInput, Prisma.ForumCommentUncheckedCreateWithoutEmoticonInput> | Prisma.ForumCommentCreateWithoutEmoticonInput[] | Prisma.ForumCommentUncheckedCreateWithoutEmoticonInput[]
+  connectOrCreate?: Prisma.ForumCommentCreateOrConnectWithoutEmoticonInput | Prisma.ForumCommentCreateOrConnectWithoutEmoticonInput[]
+  createMany?: Prisma.ForumCommentCreateManyEmoticonInputEnvelope
+  connect?: Prisma.ForumCommentWhereUniqueInput | Prisma.ForumCommentWhereUniqueInput[]
+}
+
+export type ForumCommentUncheckedCreateNestedManyWithoutEmoticonInput = {
+  create?: Prisma.XOR<Prisma.ForumCommentCreateWithoutEmoticonInput, Prisma.ForumCommentUncheckedCreateWithoutEmoticonInput> | Prisma.ForumCommentCreateWithoutEmoticonInput[] | Prisma.ForumCommentUncheckedCreateWithoutEmoticonInput[]
+  connectOrCreate?: Prisma.ForumCommentCreateOrConnectWithoutEmoticonInput | Prisma.ForumCommentCreateOrConnectWithoutEmoticonInput[]
+  createMany?: Prisma.ForumCommentCreateManyEmoticonInputEnvelope
+  connect?: Prisma.ForumCommentWhereUniqueInput | Prisma.ForumCommentWhereUniqueInput[]
+}
+
+export type ForumCommentUpdateManyWithoutEmoticonNestedInput = {
+  create?: Prisma.XOR<Prisma.ForumCommentCreateWithoutEmoticonInput, Prisma.ForumCommentUncheckedCreateWithoutEmoticonInput> | Prisma.ForumCommentCreateWithoutEmoticonInput[] | Prisma.ForumCommentUncheckedCreateWithoutEmoticonInput[]
+  connectOrCreate?: Prisma.ForumCommentCreateOrConnectWithoutEmoticonInput | Prisma.ForumCommentCreateOrConnectWithoutEmoticonInput[]
+  upsert?: Prisma.ForumCommentUpsertWithWhereUniqueWithoutEmoticonInput | Prisma.ForumCommentUpsertWithWhereUniqueWithoutEmoticonInput[]
+  createMany?: Prisma.ForumCommentCreateManyEmoticonInputEnvelope
+  set?: Prisma.ForumCommentWhereUniqueInput | Prisma.ForumCommentWhereUniqueInput[]
+  disconnect?: Prisma.ForumCommentWhereUniqueInput | Prisma.ForumCommentWhereUniqueInput[]
+  delete?: Prisma.ForumCommentWhereUniqueInput | Prisma.ForumCommentWhereUniqueInput[]
+  connect?: Prisma.ForumCommentWhereUniqueInput | Prisma.ForumCommentWhereUniqueInput[]
+  update?: Prisma.ForumCommentUpdateWithWhereUniqueWithoutEmoticonInput | Prisma.ForumCommentUpdateWithWhereUniqueWithoutEmoticonInput[]
+  updateMany?: Prisma.ForumCommentUpdateManyWithWhereWithoutEmoticonInput | Prisma.ForumCommentUpdateManyWithWhereWithoutEmoticonInput[]
+  deleteMany?: Prisma.ForumCommentScalarWhereInput | Prisma.ForumCommentScalarWhereInput[]
+}
+
+export type ForumCommentUncheckedUpdateManyWithoutEmoticonNestedInput = {
+  create?: Prisma.XOR<Prisma.ForumCommentCreateWithoutEmoticonInput, Prisma.ForumCommentUncheckedCreateWithoutEmoticonInput> | Prisma.ForumCommentCreateWithoutEmoticonInput[] | Prisma.ForumCommentUncheckedCreateWithoutEmoticonInput[]
+  connectOrCreate?: Prisma.ForumCommentCreateOrConnectWithoutEmoticonInput | Prisma.ForumCommentCreateOrConnectWithoutEmoticonInput[]
+  upsert?: Prisma.ForumCommentUpsertWithWhereUniqueWithoutEmoticonInput | Prisma.ForumCommentUpsertWithWhereUniqueWithoutEmoticonInput[]
+  createMany?: Prisma.ForumCommentCreateManyEmoticonInputEnvelope
+  set?: Prisma.ForumCommentWhereUniqueInput | Prisma.ForumCommentWhereUniqueInput[]
+  disconnect?: Prisma.ForumCommentWhereUniqueInput | Prisma.ForumCommentWhereUniqueInput[]
+  delete?: Prisma.ForumCommentWhereUniqueInput | Prisma.ForumCommentWhereUniqueInput[]
+  connect?: Prisma.ForumCommentWhereUniqueInput | Prisma.ForumCommentWhereUniqueInput[]
+  update?: Prisma.ForumCommentUpdateWithWhereUniqueWithoutEmoticonInput | Prisma.ForumCommentUpdateWithWhereUniqueWithoutEmoticonInput[]
+  updateMany?: Prisma.ForumCommentUpdateManyWithWhereWithoutEmoticonInput | Prisma.ForumCommentUpdateManyWithWhereWithoutEmoticonInput[]
   deleteMany?: Prisma.ForumCommentScalarWhereInput | Prisma.ForumCommentScalarWhereInput[]
 }
 
@@ -632,6 +704,7 @@ export type ForumCommentCreateWithoutUserInput = {
   editedAt?: Date | string | null
   createdAt?: Date | string
   post: Prisma.ForumPostCreateNestedOneWithoutCommentsInput
+  emoticon?: Prisma.EmoticonCreateNestedOneWithoutForumCommentsInput
   parent?: Prisma.ForumCommentCreateNestedOneWithoutRepliesInput
   replies?: Prisma.ForumCommentCreateNestedManyWithoutParentInput
   likes?: Prisma.ForumCommentLikeCreateNestedManyWithoutCommentInput
@@ -641,6 +714,7 @@ export type ForumCommentUncheckedCreateWithoutUserInput = {
   id?: number
   postId: number
   parentId?: number | null
+  emoticonId?: number | null
   content: string
   isHidden?: boolean
   editedAt?: Date | string | null
@@ -682,10 +756,61 @@ export type ForumCommentScalarWhereInput = {
   postId?: Prisma.IntFilter<"ForumComment"> | number
   userId?: Prisma.IntFilter<"ForumComment"> | number
   parentId?: Prisma.IntNullableFilter<"ForumComment"> | number | null
+  emoticonId?: Prisma.IntNullableFilter<"ForumComment"> | number | null
   content?: Prisma.StringFilter<"ForumComment"> | string
   isHidden?: Prisma.BoolFilter<"ForumComment"> | boolean
   editedAt?: Prisma.DateTimeNullableFilter<"ForumComment"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"ForumComment"> | Date | string
+}
+
+export type ForumCommentCreateWithoutEmoticonInput = {
+  content: string
+  isHidden?: boolean
+  editedAt?: Date | string | null
+  createdAt?: Date | string
+  post: Prisma.ForumPostCreateNestedOneWithoutCommentsInput
+  user: Prisma.UserCreateNestedOneWithoutForumCommentsInput
+  parent?: Prisma.ForumCommentCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.ForumCommentCreateNestedManyWithoutParentInput
+  likes?: Prisma.ForumCommentLikeCreateNestedManyWithoutCommentInput
+}
+
+export type ForumCommentUncheckedCreateWithoutEmoticonInput = {
+  id?: number
+  postId: number
+  userId: number
+  parentId?: number | null
+  content: string
+  isHidden?: boolean
+  editedAt?: Date | string | null
+  createdAt?: Date | string
+  replies?: Prisma.ForumCommentUncheckedCreateNestedManyWithoutParentInput
+  likes?: Prisma.ForumCommentLikeUncheckedCreateNestedManyWithoutCommentInput
+}
+
+export type ForumCommentCreateOrConnectWithoutEmoticonInput = {
+  where: Prisma.ForumCommentWhereUniqueInput
+  create: Prisma.XOR<Prisma.ForumCommentCreateWithoutEmoticonInput, Prisma.ForumCommentUncheckedCreateWithoutEmoticonInput>
+}
+
+export type ForumCommentCreateManyEmoticonInputEnvelope = {
+  data: Prisma.ForumCommentCreateManyEmoticonInput | Prisma.ForumCommentCreateManyEmoticonInput[]
+}
+
+export type ForumCommentUpsertWithWhereUniqueWithoutEmoticonInput = {
+  where: Prisma.ForumCommentWhereUniqueInput
+  update: Prisma.XOR<Prisma.ForumCommentUpdateWithoutEmoticonInput, Prisma.ForumCommentUncheckedUpdateWithoutEmoticonInput>
+  create: Prisma.XOR<Prisma.ForumCommentCreateWithoutEmoticonInput, Prisma.ForumCommentUncheckedCreateWithoutEmoticonInput>
+}
+
+export type ForumCommentUpdateWithWhereUniqueWithoutEmoticonInput = {
+  where: Prisma.ForumCommentWhereUniqueInput
+  data: Prisma.XOR<Prisma.ForumCommentUpdateWithoutEmoticonInput, Prisma.ForumCommentUncheckedUpdateWithoutEmoticonInput>
+}
+
+export type ForumCommentUpdateManyWithWhereWithoutEmoticonInput = {
+  where: Prisma.ForumCommentScalarWhereInput
+  data: Prisma.XOR<Prisma.ForumCommentUpdateManyMutationInput, Prisma.ForumCommentUncheckedUpdateManyWithoutEmoticonInput>
 }
 
 export type ForumCommentCreateWithoutPostInput = {
@@ -694,6 +819,7 @@ export type ForumCommentCreateWithoutPostInput = {
   editedAt?: Date | string | null
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutForumCommentsInput
+  emoticon?: Prisma.EmoticonCreateNestedOneWithoutForumCommentsInput
   parent?: Prisma.ForumCommentCreateNestedOneWithoutRepliesInput
   replies?: Prisma.ForumCommentCreateNestedManyWithoutParentInput
   likes?: Prisma.ForumCommentLikeCreateNestedManyWithoutCommentInput
@@ -703,6 +829,7 @@ export type ForumCommentUncheckedCreateWithoutPostInput = {
   id?: number
   userId: number
   parentId?: number | null
+  emoticonId?: number | null
   content: string
   isHidden?: boolean
   editedAt?: Date | string | null
@@ -743,6 +870,7 @@ export type ForumCommentCreateWithoutRepliesInput = {
   createdAt?: Date | string
   post: Prisma.ForumPostCreateNestedOneWithoutCommentsInput
   user: Prisma.UserCreateNestedOneWithoutForumCommentsInput
+  emoticon?: Prisma.EmoticonCreateNestedOneWithoutForumCommentsInput
   parent?: Prisma.ForumCommentCreateNestedOneWithoutRepliesInput
   likes?: Prisma.ForumCommentLikeCreateNestedManyWithoutCommentInput
 }
@@ -752,6 +880,7 @@ export type ForumCommentUncheckedCreateWithoutRepliesInput = {
   postId: number
   userId: number
   parentId?: number | null
+  emoticonId?: number | null
   content: string
   isHidden?: boolean
   editedAt?: Date | string | null
@@ -771,6 +900,7 @@ export type ForumCommentCreateWithoutParentInput = {
   createdAt?: Date | string
   post: Prisma.ForumPostCreateNestedOneWithoutCommentsInput
   user: Prisma.UserCreateNestedOneWithoutForumCommentsInput
+  emoticon?: Prisma.EmoticonCreateNestedOneWithoutForumCommentsInput
   replies?: Prisma.ForumCommentCreateNestedManyWithoutParentInput
   likes?: Prisma.ForumCommentLikeCreateNestedManyWithoutCommentInput
 }
@@ -779,6 +909,7 @@ export type ForumCommentUncheckedCreateWithoutParentInput = {
   id?: number
   postId: number
   userId: number
+  emoticonId?: number | null
   content: string
   isHidden?: boolean
   editedAt?: Date | string | null
@@ -814,6 +945,7 @@ export type ForumCommentUpdateWithoutRepliesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   post?: Prisma.ForumPostUpdateOneRequiredWithoutCommentsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutForumCommentsNestedInput
+  emoticon?: Prisma.EmoticonUpdateOneWithoutForumCommentsNestedInput
   parent?: Prisma.ForumCommentUpdateOneWithoutRepliesNestedInput
   likes?: Prisma.ForumCommentLikeUpdateManyWithoutCommentNestedInput
 }
@@ -823,6 +955,7 @@ export type ForumCommentUncheckedUpdateWithoutRepliesInput = {
   postId?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  emoticonId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
   editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -853,6 +986,7 @@ export type ForumCommentCreateWithoutLikesInput = {
   createdAt?: Date | string
   post: Prisma.ForumPostCreateNestedOneWithoutCommentsInput
   user: Prisma.UserCreateNestedOneWithoutForumCommentsInput
+  emoticon?: Prisma.EmoticonCreateNestedOneWithoutForumCommentsInput
   parent?: Prisma.ForumCommentCreateNestedOneWithoutRepliesInput
   replies?: Prisma.ForumCommentCreateNestedManyWithoutParentInput
 }
@@ -862,6 +996,7 @@ export type ForumCommentUncheckedCreateWithoutLikesInput = {
   postId: number
   userId: number
   parentId?: number | null
+  emoticonId?: number | null
   content: string
   isHidden?: boolean
   editedAt?: Date | string | null
@@ -892,6 +1027,7 @@ export type ForumCommentUpdateWithoutLikesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   post?: Prisma.ForumPostUpdateOneRequiredWithoutCommentsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutForumCommentsNestedInput
+  emoticon?: Prisma.EmoticonUpdateOneWithoutForumCommentsNestedInput
   parent?: Prisma.ForumCommentUpdateOneWithoutRepliesNestedInput
   replies?: Prisma.ForumCommentUpdateManyWithoutParentNestedInput
 }
@@ -901,6 +1037,7 @@ export type ForumCommentUncheckedUpdateWithoutLikesInput = {
   postId?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  emoticonId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
   editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -912,6 +1049,7 @@ export type ForumCommentCreateManyUserInput = {
   id?: number
   postId: number
   parentId?: number | null
+  emoticonId?: number | null
   content: string
   isHidden?: boolean
   editedAt?: Date | string | null
@@ -924,6 +1062,7 @@ export type ForumCommentUpdateWithoutUserInput = {
   editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   post?: Prisma.ForumPostUpdateOneRequiredWithoutCommentsNestedInput
+  emoticon?: Prisma.EmoticonUpdateOneWithoutForumCommentsNestedInput
   parent?: Prisma.ForumCommentUpdateOneWithoutRepliesNestedInput
   replies?: Prisma.ForumCommentUpdateManyWithoutParentNestedInput
   likes?: Prisma.ForumCommentLikeUpdateManyWithoutCommentNestedInput
@@ -933,6 +1072,7 @@ export type ForumCommentUncheckedUpdateWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   postId?: Prisma.IntFieldUpdateOperationsInput | number
   parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  emoticonId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
   editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -945,6 +1085,54 @@ export type ForumCommentUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   postId?: Prisma.IntFieldUpdateOperationsInput | number
   parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  emoticonId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ForumCommentCreateManyEmoticonInput = {
+  id?: number
+  postId: number
+  userId: number
+  parentId?: number | null
+  content: string
+  isHidden?: boolean
+  editedAt?: Date | string | null
+  createdAt?: Date | string
+}
+
+export type ForumCommentUpdateWithoutEmoticonInput = {
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  post?: Prisma.ForumPostUpdateOneRequiredWithoutCommentsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutForumCommentsNestedInput
+  parent?: Prisma.ForumCommentUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.ForumCommentUpdateManyWithoutParentNestedInput
+  likes?: Prisma.ForumCommentLikeUpdateManyWithoutCommentNestedInput
+}
+
+export type ForumCommentUncheckedUpdateWithoutEmoticonInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  postId?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  replies?: Prisma.ForumCommentUncheckedUpdateManyWithoutParentNestedInput
+  likes?: Prisma.ForumCommentLikeUncheckedUpdateManyWithoutCommentNestedInput
+}
+
+export type ForumCommentUncheckedUpdateManyWithoutEmoticonInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  postId?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
   editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -955,6 +1143,7 @@ export type ForumCommentCreateManyPostInput = {
   id?: number
   userId: number
   parentId?: number | null
+  emoticonId?: number | null
   content: string
   isHidden?: boolean
   editedAt?: Date | string | null
@@ -967,6 +1156,7 @@ export type ForumCommentUpdateWithoutPostInput = {
   editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutForumCommentsNestedInput
+  emoticon?: Prisma.EmoticonUpdateOneWithoutForumCommentsNestedInput
   parent?: Prisma.ForumCommentUpdateOneWithoutRepliesNestedInput
   replies?: Prisma.ForumCommentUpdateManyWithoutParentNestedInput
   likes?: Prisma.ForumCommentLikeUpdateManyWithoutCommentNestedInput
@@ -976,6 +1166,7 @@ export type ForumCommentUncheckedUpdateWithoutPostInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  emoticonId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
   editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -988,6 +1179,7 @@ export type ForumCommentUncheckedUpdateManyWithoutPostInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  emoticonId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
   editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -998,6 +1190,7 @@ export type ForumCommentCreateManyParentInput = {
   id?: number
   postId: number
   userId: number
+  emoticonId?: number | null
   content: string
   isHidden?: boolean
   editedAt?: Date | string | null
@@ -1011,6 +1204,7 @@ export type ForumCommentUpdateWithoutParentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   post?: Prisma.ForumPostUpdateOneRequiredWithoutCommentsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutForumCommentsNestedInput
+  emoticon?: Prisma.EmoticonUpdateOneWithoutForumCommentsNestedInput
   replies?: Prisma.ForumCommentUpdateManyWithoutParentNestedInput
   likes?: Prisma.ForumCommentLikeUpdateManyWithoutCommentNestedInput
 }
@@ -1019,6 +1213,7 @@ export type ForumCommentUncheckedUpdateWithoutParentInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   postId?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  emoticonId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
   editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1031,6 +1226,7 @@ export type ForumCommentUncheckedUpdateManyWithoutParentInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   postId?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  emoticonId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   isHidden?: Prisma.BoolFieldUpdateOperationsInput | boolean
   editedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1082,12 +1278,14 @@ export type ForumCommentSelect<ExtArgs extends runtime.Types.Extensions.Internal
   postId?: boolean
   userId?: boolean
   parentId?: boolean
+  emoticonId?: boolean
   content?: boolean
   isHidden?: boolean
   editedAt?: boolean
   createdAt?: boolean
   post?: boolean | Prisma.ForumPostDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  emoticon?: boolean | Prisma.ForumComment$emoticonArgs<ExtArgs>
   parent?: boolean | Prisma.ForumComment$parentArgs<ExtArgs>
   replies?: boolean | Prisma.ForumComment$repliesArgs<ExtArgs>
   likes?: boolean | Prisma.ForumComment$likesArgs<ExtArgs>
@@ -1099,12 +1297,14 @@ export type ForumCommentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   postId?: boolean
   userId?: boolean
   parentId?: boolean
+  emoticonId?: boolean
   content?: boolean
   isHidden?: boolean
   editedAt?: boolean
   createdAt?: boolean
   post?: boolean | Prisma.ForumPostDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  emoticon?: boolean | Prisma.ForumComment$emoticonArgs<ExtArgs>
   parent?: boolean | Prisma.ForumComment$parentArgs<ExtArgs>
 }, ExtArgs["result"]["forumComment"]>
 
@@ -1113,12 +1313,14 @@ export type ForumCommentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   postId?: boolean
   userId?: boolean
   parentId?: boolean
+  emoticonId?: boolean
   content?: boolean
   isHidden?: boolean
   editedAt?: boolean
   createdAt?: boolean
   post?: boolean | Prisma.ForumPostDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  emoticon?: boolean | Prisma.ForumComment$emoticonArgs<ExtArgs>
   parent?: boolean | Prisma.ForumComment$parentArgs<ExtArgs>
 }, ExtArgs["result"]["forumComment"]>
 
@@ -1127,16 +1329,18 @@ export type ForumCommentSelectScalar = {
   postId?: boolean
   userId?: boolean
   parentId?: boolean
+  emoticonId?: boolean
   content?: boolean
   isHidden?: boolean
   editedAt?: boolean
   createdAt?: boolean
 }
 
-export type ForumCommentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "postId" | "userId" | "parentId" | "content" | "isHidden" | "editedAt" | "createdAt", ExtArgs["result"]["forumComment"]>
+export type ForumCommentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "postId" | "userId" | "parentId" | "emoticonId" | "content" | "isHidden" | "editedAt" | "createdAt", ExtArgs["result"]["forumComment"]>
 export type ForumCommentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   post?: boolean | Prisma.ForumPostDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  emoticon?: boolean | Prisma.ForumComment$emoticonArgs<ExtArgs>
   parent?: boolean | Prisma.ForumComment$parentArgs<ExtArgs>
   replies?: boolean | Prisma.ForumComment$repliesArgs<ExtArgs>
   likes?: boolean | Prisma.ForumComment$likesArgs<ExtArgs>
@@ -1145,11 +1349,13 @@ export type ForumCommentInclude<ExtArgs extends runtime.Types.Extensions.Interna
 export type ForumCommentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   post?: boolean | Prisma.ForumPostDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  emoticon?: boolean | Prisma.ForumComment$emoticonArgs<ExtArgs>
   parent?: boolean | Prisma.ForumComment$parentArgs<ExtArgs>
 }
 export type ForumCommentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   post?: boolean | Prisma.ForumPostDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  emoticon?: boolean | Prisma.ForumComment$emoticonArgs<ExtArgs>
   parent?: boolean | Prisma.ForumComment$parentArgs<ExtArgs>
 }
 
@@ -1158,6 +1364,7 @@ export type $ForumCommentPayload<ExtArgs extends runtime.Types.Extensions.Intern
   objects: {
     post: Prisma.$ForumPostPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs>
+    emoticon: Prisma.$EmoticonPayload<ExtArgs> | null
     parent: Prisma.$ForumCommentPayload<ExtArgs> | null
     replies: Prisma.$ForumCommentPayload<ExtArgs>[]
     likes: Prisma.$ForumCommentLikePayload<ExtArgs>[]
@@ -1167,6 +1374,7 @@ export type $ForumCommentPayload<ExtArgs extends runtime.Types.Extensions.Intern
     postId: number
     userId: number
     parentId: number | null
+    emoticonId: number | null
     content: string
     isHidden: boolean
     editedAt: Date | null
@@ -1567,6 +1775,7 @@ export interface Prisma__ForumCommentClient<T, Null = never, ExtArgs extends run
   readonly [Symbol.toStringTag]: "PrismaPromise"
   post<T extends Prisma.ForumPostDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ForumPostDefaultArgs<ExtArgs>>): Prisma.Prisma__ForumPostClient<runtime.Types.Result.GetResult<Prisma.$ForumPostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  emoticon<T extends Prisma.ForumComment$emoticonArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ForumComment$emoticonArgs<ExtArgs>>): Prisma.Prisma__EmoticonClient<runtime.Types.Result.GetResult<Prisma.$EmoticonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   parent<T extends Prisma.ForumComment$parentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ForumComment$parentArgs<ExtArgs>>): Prisma.Prisma__ForumCommentClient<runtime.Types.Result.GetResult<Prisma.$ForumCommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   replies<T extends Prisma.ForumComment$repliesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ForumComment$repliesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ForumCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   likes<T extends Prisma.ForumComment$likesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ForumComment$likesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ForumCommentLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1603,6 +1812,7 @@ export interface ForumCommentFieldRefs {
   readonly postId: Prisma.FieldRef<"ForumComment", 'Int'>
   readonly userId: Prisma.FieldRef<"ForumComment", 'Int'>
   readonly parentId: Prisma.FieldRef<"ForumComment", 'Int'>
+  readonly emoticonId: Prisma.FieldRef<"ForumComment", 'Int'>
   readonly content: Prisma.FieldRef<"ForumComment", 'String'>
   readonly isHidden: Prisma.FieldRef<"ForumComment", 'Boolean'>
   readonly editedAt: Prisma.FieldRef<"ForumComment", 'DateTime'>
@@ -2003,6 +2213,25 @@ export type ForumCommentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many ForumComments to delete.
    */
   limit?: number
+}
+
+/**
+ * ForumComment.emoticon
+ */
+export type ForumComment$emoticonArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Emoticon
+   */
+  select?: Prisma.EmoticonSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Emoticon
+   */
+  omit?: Prisma.EmoticonOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmoticonInclude<ExtArgs> | null
+  where?: Prisma.EmoticonWhereInput
 }
 
 /**

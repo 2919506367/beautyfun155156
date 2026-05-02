@@ -39,13 +39,19 @@ export default async function FavoritesPage({
     );
   }
 
+  const isAdmin = user.role === "ADMIN";
+  const favoriteWhere = {
+    userId: user.id,
+    ...(!isAdmin ? { work: { isPublic: true } } : {}),
+  };
+
   const totalCount = await prisma.favorite.count({
-    where: { userId: user.id },
+    where: favoriteWhere,
   });
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 
   const favorites = await prisma.favorite.findMany({
-    where: { userId: user.id },
+    where: favoriteWhere,
     orderBy: { createdAt: "desc" },
     skip: (currentPage - 1) * PAGE_SIZE,
     take: PAGE_SIZE,
