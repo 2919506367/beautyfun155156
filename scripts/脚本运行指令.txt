@@ -1,0 +1,4 @@
+npm install -D tsx
+
+
+npx tsx scripts/import-local-content.ts

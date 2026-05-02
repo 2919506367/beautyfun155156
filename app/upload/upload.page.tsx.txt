@@ -1,0 +1,50 @@
+import Link from "next/link";
+import { getCurrentUser } from "@/lib/auth";
+import UploadForm from "@/components/UploadForm";
+import SiteLayout from "@/components/SiteLayout";
+
+export default async function UploadPage() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return (
+      <SiteLayout title="上传作品" active="upload">
+        <div style={panelStyle}>
+          <h2 style={{ marginTop: 0 }}>上传作品</h2>
+          <p style={{ color: "#6b7280" }}>请先登录后再上传。</p>
+          <Link href="/login" style={btnStyle}>
+            去登录
+          </Link>
+        </div>
+      </SiteLayout>
+    );
+  }
+
+  return (
+    <SiteLayout title="上传作品" active="upload">
+      <div style={panelStyle}>
+        <div style={{ marginBottom: 18, color: "#6b7280", fontSize: 14 }}>
+          支持上传图集、动图帧序列、视频。上传后会自动出现在对应分区。
+        </div>
+        <UploadForm />
+      </div>
+    </SiteLayout>
+  );
+}
+
+const panelStyle: React.CSSProperties = {
+  background: "#fff",
+  border: "1px solid #e5e7eb",
+  borderRadius: 22,
+  padding: 24,
+};
+
+const btnStyle: React.CSSProperties = {
+  padding: "10px 16px",
+  borderRadius: 999,
+  background: "#111827",
+  color: "#fff",
+  textDecoration: "none",
+  display: "inline-block",
+  fontWeight: 700,
+};

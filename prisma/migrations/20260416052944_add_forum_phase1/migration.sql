@@ -1,0 +1,46 @@
+-- CreateTable
+CREATE TABLE "ForumPost" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "title" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "ageRating" TEXT NOT NULL DEFAULT 'ALL_AGES',
+    "isPinned" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "authorId" INTEGER NOT NULL,
+    CONSTRAINT "ForumPost_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "ForumPostMedia" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "postId" INTEGER NOT NULL,
+    "type" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
+    "sortOrder" INTEGER NOT NULL DEFAULT 0,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "ForumPostMedia_postId_fkey" FOREIGN KEY ("postId") REFERENCES "ForumPost" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "ForumComment" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "postId" INTEGER NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "content" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "ForumComment_postId_fkey" FOREIGN KEY ("postId") REFERENCES "ForumPost" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "ForumComment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "ForumSafeMode" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "userId" INTEGER NOT NULL,
+    "enabled" BOOLEAN NOT NULL DEFAULT true,
+    "updatedAt" DATETIME NOT NULL,
+    CONSTRAINT "ForumSafeMode_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ForumSafeMode_userId_key" ON "ForumSafeMode"("userId");

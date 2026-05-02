@@ -1,0 +1,280 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+export default function LoginPage() {
+  const router = useRouter();
+
+const [tab, setTab] = useState<"login" | "register">("login");
+const [nickname, setNickname] = useState("");
+const [account, setAccount] = useState("");
+const [password, setPassword] = useState("");
+const [inviteCode, setInviteCode] = useState("");
+const [loading, setLoading] = useState(false);
+
+  async function handleSubmit() {
+    if (loading) return;
+
+if (!account.trim() || !password.trim()) {
+  alert("账号和密码不能为空");
+  return;
+}
+
+if (tab === "register" && !nickname.trim()) {
+  alert("昵称不能为空");
+  return;
+}
+
+if (tab === "register" && !inviteCode.trim()) {
+  alert("邀请码不能为空");
+  return;
+}
+
+    setLoading(true);
+
+    try {
+      const url = tab === "login" ? "/api/auth/login" : "/api/auth/register";
+
+      const body =
+        tab === "login"
+          ? {
+              account: account.trim(),
+              password: password.trim(),
+            }
+          : {
+              nickname: nickname.trim(),
+              account: account.trim(),
+              password: password.trim(),
+              inviteCode: inviteCode.trim(),
+            };
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || "操作失败");
+        return;
+      }
+
+      alert(tab === "login" ? "登录成功" : "注册成功");
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      alert("请求失败，请稍后再试");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <main
+      style={{
+        minHeight: "100vh",
+        padding: 12,
+        background: "#f5f7fa",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 460,
+          marginTop: 16,
+          background: "#fff",
+          border: "1px solid #e5e7eb",
+          borderRadius: 20,
+          padding: 18,
+          boxShadow: "0 16px 40px rgba(17,24,39,0.08)",
+        }}
+      >
+        <div style={{ marginBottom: 18 }}>
+          <div
+            style={{
+              fontSize: 28,
+              fontWeight: 900,
+              color: "#111827",
+              marginBottom: 8,
+            }}
+          >
+            BeautyFun
+          </div>
+          <div style={{ fontSize: 14, color: "#6b7280", lineHeight: 1.7 }}>
+          {tab === "login"
+            ? "使用账号和密码登录"
+            : "注册需要昵称、账号、密码和邀请码"}
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            gap: 8,
+            marginBottom: 18,
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => setTab("login")}
+            style={{
+              flex: 1,
+              padding: "10px 12px",
+              borderRadius: 999,
+              border: tab === "login" ? "1px solid #111827" : "1px solid #d1d5db",
+              background: tab === "login" ? "#111827" : "#fff",
+              color: tab === "login" ? "#fff" : "#111827",
+              fontWeight: 800,
+              fontSize: 14,
+              cursor: "pointer",
+            }}
+          >
+            登录
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setTab("register")}
+            style={{
+              flex: 1,
+              padding: "10px 12px",
+              borderRadius: 999,
+              border: tab === "register" ? "1px solid #111827" : "1px solid #d1d5db",
+              background: tab === "register" ? "#111827" : "#fff",
+              color: tab === "register" ? "#fff" : "#111827",
+              fontWeight: 800,
+              fontSize: 14,
+              cursor: "pointer",
+            }}
+          >
+            注册
+          </button>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          {tab === "register" && (
+  <>
+    <div>
+      <div
+        style={{
+          marginBottom: 8,
+          fontSize: 13,
+          fontWeight: 800,
+          color: "#374151",
+        }}
+      >
+        昵称
+      </div>
+      <input
+        value={nickname}
+        onChange={(e) => setNickname(e.target.value)}
+        placeholder="请输入昵称"
+        style={inputStyle}
+      />
+    </div>
+
+    <div>
+      <div
+        style={{
+          marginBottom: 8,
+          fontSize: 13,
+          fontWeight: 800,
+          color: "#374151",
+        }}
+      >
+        邀请码
+      </div>
+      <input
+        value={inviteCode}
+        onChange={(e) => setInviteCode(e.target.value)}
+        placeholder="请输入邀请码"
+        style={inputStyle}
+      />
+    </div>
+  </>
+)}
+
+<div>
+  <div
+    style={{
+      marginBottom: 8,
+      fontSize: 13,
+      fontWeight: 800,
+      color: "#374151",
+    }}
+  >
+    账号
+  </div>
+  <input
+    value={account}
+    onChange={(e) => setAccount(e.target.value)}
+    placeholder="请输入账号"
+    style={inputStyle}
+  />
+</div>
+
+          <div>
+            <div
+              style={{
+                marginBottom: 8,
+                fontSize: 13,
+                fontWeight: 800,
+                color: "#374151",
+              }}
+            >
+              密码
+            </div>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="请输入密码"
+              style={inputStyle}
+            />
+          </div>
+
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={loading}
+            style={{
+              width: "100%",
+              padding: "12px 14px",
+              borderRadius: 14,
+              border: "none",
+              background: "#111827",
+              color: "#fff",
+              fontWeight: 900,
+              fontSize: 14,
+              cursor: "pointer",
+              marginTop: 4,
+              opacity: loading ? 0.7 : 1,
+            }}
+          >
+            {loading ? "处理中..." : tab === "login" ? "立即登录" : "立即注册"}
+          </button>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "12px 14px",
+  borderRadius: 14,
+  border: "1px solid #d1d5db",
+  background: "#fff",
+  color: "#111827",
+  fontSize: 14,
+  outline: "none",
+};

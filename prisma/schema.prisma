@@ -1,0 +1,373 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  account      String   @unique @map("email")
+  passwordHash String
+  nickname     String
+  avatarUrl    String?
+  role         UserRole @default(BASIC)
+  xp           Int      @default(0)
+  isBanned     Boolean  @default(false)
+  isMuted      Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  works                 Work[]
+  comments              Comment[]
+  favorites             Favorite[]
+  histories             ViewHistory[]
+  commentLikes          CommentLike[]
+
+forumPosts         ForumPost[]
+forumComments      ForumComment[]
+forumSafeModeState ForumSafeMode?
+
+  sentFriendRequests     FriendRequest[] @relation("FriendRequestSender")
+  receivedFriendRequests FriendRequest[] @relation("FriendRequestReceiver")
+  friendshipsAsUser1     Friendship[]    @relation("FriendshipUser1")
+  friendshipsAsUser2     Friendship[]    @relation("FriendshipUser2")
+
+  sentPrivateMessages     PrivateMessage[] @relation("PrivateMessageSender")
+  receivedPrivateMessages PrivateMessage[] @relation("PrivateMessageReceiver")
+
+  createdGroups     GroupChat[]        @relation("GroupCreator")
+  groupMembers      GroupChatMember[]
+  sentGroupMessages GroupMessage[]     @relation("GroupMessageSender")
+
+  emoticons Emoticon[]
+
+forumCommentLikes ForumCommentLike[]
+}
+
+model Work {
+  id                  Int      @id @default(autoincrement())
+  type                WorkType
+  title               String
+  description         String?
+  coverUrl            String?
+  tags                String   @default("")
+  ageRating           AgeRating @default(AGE_16_PLUS)
+  sourceKey           String?  @unique
+  viewCount           Int      @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  authorId Int
+  author   User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  files               WorkFile[]
+  comments            Comment[]
+  favorites           Favorite[]
+  histories           ViewHistory[]
+  sharedMessages      PrivateMessage[]
+  sharedGroupMessages GroupMessage[]
+}
+
+model WorkFile {
+  id        Int      @id @default(autoincrement())
+  workId    Int
+  fileUrl   String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  work Work @relation(fields: [workId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  content    String
+  emoticonId Int?
+  createdAt  DateTime @default(now())
+
+  userId Int
+  workId Int
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  work     Work      @relation(fields: [workId], references: [id], onDelete: Cascade)
+  emoticon Emoticon? @relation(fields: [emoticonId], references: [id], onDelete: SetNull)
+
+  likes CommentLike[]
+}
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  userId Int
+  workId Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  work Work @relation(fields: [workId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workId])
+}
+
+model FriendRequest {
+  id        Int                 @id @default(autoincrement())
+  fromUserId Int
+  toUserId   Int
+  status     FriendRequestStatus @default(PENDING)
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+
+  fromUser User @relation("FriendRequestSender", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser   User @relation("FriendRequestReceiver", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  @@unique([fromUserId, toUserId])
+}
+
+model Friendship {
+  id        Int      @id @default(autoincrement())
+  user1Id   Int
+  user2Id   Int
+  createdAt DateTime @default(now())
+
+  user1 User @relation("FriendshipUser1", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2 User @relation("FriendshipUser2", fields: [user2Id], references: [id], onDelete: Cascade)
+
+  @@unique([user1Id, user2Id])
+}
+
+model PrivateMessage {
+  id           Int      @id @default(autoincrement())
+  fromUserId   Int
+  toUserId     Int
+  content      String
+  sharedWorkId Int?
+  emoticonId   Int?
+  replyToId    Int?
+  readAt       DateTime?
+  editedAt     DateTime?
+  isDeleted    Boolean  @default(false)
+  mentionText  String?
+  createdAt    DateTime @default(now())
+
+  fromUser   User             @relation("PrivateMessageSender", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser     User             @relation("PrivateMessageReceiver", fields: [toUserId], references: [id], onDelete: Cascade)
+  sharedWork Work?            @relation(fields: [sharedWorkId], references: [id], onDelete: SetNull)
+  emoticon   Emoticon?        @relation(fields: [emoticonId], references: [id], onDelete: SetNull)
+  replyTo    PrivateMessage?  @relation("PrivateMessageReply", fields: [replyToId], references: [id], onDelete: SetNull)
+  replies    PrivateMessage[] @relation("PrivateMessageReply")
+}
+
+model GroupChat {
+  id          Int      @id @default(autoincrement())
+  name        String
+  createdById Int
+  createdAt   DateTime @default(now())
+
+  createdBy User             @relation("GroupCreator", fields: [createdById], references: [id], onDelete: Cascade)
+  members   GroupChatMember[]
+  messages  GroupMessage[]
+}
+
+model GroupChatMember {
+  id       Int      @id @default(autoincrement())
+  groupId  Int
+  userId   Int
+  joinedAt DateTime @default(now())
+
+  group GroupChat @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+}
+
+model GroupMessage {
+  id           Int      @id @default(autoincrement())
+  groupId      Int
+  senderId     Int
+  content      String
+  sharedWorkId Int?
+  emoticonId   Int?
+  replyToId    Int?
+  readAt       DateTime?
+  editedAt     DateTime?
+  isDeleted    Boolean  @default(false)
+  mentionText  String?
+  createdAt    DateTime @default(now())
+
+  group      GroupChat      @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  sender     User           @relation("GroupMessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  sharedWork Work?          @relation(fields: [sharedWorkId], references: [id], onDelete: SetNull)
+  emoticon   Emoticon?      @relation(fields: [emoticonId], references: [id], onDelete: SetNull)
+  replyTo    GroupMessage?  @relation("GroupMessageReply", fields: [replyToId], references: [id], onDelete: SetNull)
+  replies    GroupMessage[] @relation("GroupMessageReply")
+}
+
+model Emoticon {
+  id           Int       @id @default(autoincrement())
+  ownerId      Int
+  label        String?
+  imageUrl     String
+  copiedFromId Int?
+  createdAt    DateTime  @default(now())
+
+  owner           User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  copiedFrom      Emoticon?        @relation("EmoticonCopy", fields: [copiedFromId], references: [id], onDelete: SetNull)
+  copiedItems     Emoticon[]       @relation("EmoticonCopy")
+  comments        Comment[]
+  privateMessages PrivateMessage[]
+  groupMessages   GroupMessage[]
+
+  @@unique([ownerId, copiedFromId])
+}
+
+model ViewHistory {
+  id       Int      @id @default(autoincrement())
+  userId   Int
+  workId   Int
+  viewedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  work Work @relation(fields: [workId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workId])
+}
+
+model MembershipCdk {
+  id          Int       @id @default(autoincrement())
+  code        String    @unique
+  targetRole  UserRole  @default(GOLD)
+  isUsed      Boolean   @default(false)
+  usedAt      DateTime?
+  createdAt   DateTime  @default(now())
+  createdById Int?
+  usedById    Int?
+}
+
+model RegisterInviteCode {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique
+  isUsed      Boolean  @default(false)
+  usedAt      DateTime?
+  createdAt   DateTime @default(now())
+  createdById Int?
+  usedById    Int?
+}
+
+model CommentLike {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  comment   Comment  @relation(fields: [commentId], references: [id])
+  commentId Int
+  createdAt DateTime @default(now())
+
+  @@unique([userId, commentId])
+}
+
+
+model ForumPost {
+  id                 Int             @id @default(autoincrement())
+  title              String
+  content            String
+  coverUrl           String?
+  mediaCount         Int             @default(0)
+  category           String          @default("综合")
+  ageRating          AgeRating       @default(ALL_AGES)
+  isPinned           Boolean         @default(false)
+
+  telegramChatId     String?
+  telegramMessageId  Int?
+  telegramGroupedId  String?
+  telegramPostUrl    String?
+  importedFrom       String?
+  importedAt         DateTime?
+
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  authorId           Int
+
+  author             User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  mediaItems         ForumPostMedia[]
+  comments           ForumComment[]
+
+  @@unique([telegramChatId, telegramMessageId])
+}
+
+model ForumPostMedia {
+  id         Int             @id @default(autoincrement())
+  postId      Int
+  type        ForumMediaType
+  url         String
+  sortOrder   Int             @default(0)
+  createdAt   DateTime        @default(now())
+
+  post ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model ForumComment {
+  id         Int                @id @default(autoincrement())
+  postId     Int
+  userId     Int
+  parentId   Int?
+  content    String
+  isHidden   Boolean            @default(false)
+  editedAt   DateTime?
+  createdAt  DateTime           @default(now())
+
+  post       ForumPost          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent     ForumComment?      @relation("ForumCommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies    ForumComment[]     @relation("ForumCommentReplies")
+  likes      ForumCommentLike[]
+}
+
+model ForumCommentLike {
+  id         Int          @id @default(autoincrement())
+  commentId  Int
+  userId     Int
+  createdAt  DateTime     @default(now())
+
+  comment    ForumComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, userId])
+}
+
+model ForumSafeMode {
+  id        Int      @id @default(autoincrement())
+  userId     Int      @unique
+  enabled    Boolean  @default(true)
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum ForumMediaType {
+  IMAGE
+  VIDEO
+  JPEG_SEQUENCE
+}
+
+enum UserRole {
+  BASIC
+  GOLD
+  ADMIN
+}
+
+enum WorkType {
+  FOLDER
+  GIF
+  VIDEO
+}
+
+enum FriendRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum AgeRating {
+  ALL_AGES
+  AGE_16_PLUS
+}
