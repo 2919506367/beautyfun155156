@@ -29,9 +29,9 @@ function getJwtSecret() {
   return process.env.JWT_SECRET || "beautyfun-local-secret-123456";
 }
 
-function signPayload(payload: object, expiresIn: string | number) {
+function signPayload(payload: object, expiresInSeconds: number) {
   return jwt.sign(payload, getJwtSecret(), {
-    expiresIn,
+    expiresIn: expiresInSeconds,
   });
 }
 
@@ -189,22 +189,4 @@ export function markCaptchaTrusted(res: NextResponse) {
     path: "/",
     maxAge: 0,
   });
-}
-
-export function attachCaptchaState(req: NextRequest, res: NextResponse) {
-  const needCaptcha = shouldRequireCaptcha(req);
-
-  if (needCaptcha) {
-    const code = generateFiveDigitCaptcha();
-    setCaptchaChallengeCookie(res, code);
-    return {
-      needCaptcha,
-      captchaCode: code,
-    };
-  }
-
-  return {
-    needCaptcha,
-    captchaCode: "",
-  };
 }
